@@ -8,6 +8,5 @@ public interface ScoreCalculator {
 
     Integer totalScoreCalculator(List<FrameScore> frameScores);
 
-    List<Integer> intermediateScores(List<FrameScore> frameScores);
-
+    List<FrameScore> calculateFramesScores(List<FrameScore> frameScores);
 }
