@@ -9,6 +9,8 @@ import matchparser.MatchTextParser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import scorecalculator.BowlingScoreCalculator;
+import scorecalculator.ScoreCalculator;
 
 import java.util.List;
 import java.util.Map;
@@ -25,11 +27,13 @@ public class TxtToFramesIntegrationTest {
 
     private MatchParser matchTextParser;
     private MatchBuilder bowlingMatchBuilder;
+    private ScoreCalculator scoreCalculator;
 
     @BeforeEach
     void setup() {
         matchTextParser = new MatchTextParser();
         bowlingMatchBuilder = new BowlingMatchBuilder();
+        scoreCalculator = new BowlingScoreCalculator();
     }
 
     @Test
@@ -45,6 +49,16 @@ public class TxtToFramesIntegrationTest {
                 .map(playerList -> bowlingMatchBuilder.getPlayersChancesAsFrameScore(playerList.stream()))
                 .collect(toList());
         assertThat(allPlayersScores).allMatch(scores -> scores.size() == 10);
+
+        List<List<FrameScore>> allPlayersCalculatedScores = allPlayersScores.stream()
+                .map(playerScores -> scoreCalculator.calculateFramesScores(playerScores))
+                .collect(toList());
+
+        List<FrameScore> johnScores = allPlayersCalculatedScores.get(0);
+        List<FrameScore> jeffScores = allPlayersCalculatedScores.get(0);
+
+        assertThat(johnScores.get(9).getFrameFinalScore()).isEqualTo(151);
+        assertThat(jeffScores.get(9).getFrameFinalScore()).isEqualTo(151);
     }
 
     @Test
@@ -62,6 +76,9 @@ public class TxtToFramesIntegrationTest {
         List<FrameScore> carlScores = allPlayersScores.get(0);
         assertThat(carlScores).hasSize(10);
         assertThat(carlScores).allMatch(FrameScore::isStrike);
+
+        List<FrameScore> frameScoresCalculated = scoreCalculator.calculateFramesScores(carlScores);
+        assertThat(frameScoresCalculated.get(9).getFrameFinalScore()).isEqualTo(300);
     }
 
     @Test
@@ -70,7 +87,9 @@ public class TxtToFramesIntegrationTest {
         Stream<Chance> chanceStream = matchTextParser.parseInput(emptyMatchResource);
         Map<String, List<Chance>> map = bowlingMatchBuilder.mapPlayersChance(chanceStream);
 
-        List<Boolean> validDatas = map.values().stream().map(playerList -> bowlingMatchBuilder.validatePlayerMatchData(playerList.stream())).collect(toList());
+        List<Boolean> validDatas = map.values().stream()
+                .map(playerList -> bowlingMatchBuilder.validatePlayerMatchData(playerList.stream()))
+                .collect(toList());
         assertThat(validDatas).isEmpty();
     }
 

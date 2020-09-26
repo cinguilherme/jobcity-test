@@ -10,7 +10,7 @@
 txt file with scores in the expected format
 a. Each line represents a player score
 b. An F represents a FOUL which should count as zero
-c. The rolls are tab separated
+c. The rolls are tab separated on the output
 
 ### Input sample Bellow
 ```
