@@ -35,6 +35,15 @@ class BowlingScoreCalculatorTest {
                 .containsExactlyInAnyOrder(15, 30, 45, 60, 75, 90, 105, 120, 135, 150);
     }
 
+    @Test
+    void shouldCalculateEachFrameScore_no_spare_no_strikes_all_9() {
+        List<FrameScore> frameScores = sampleSimpleNoConvertionsValidScores();
+        List<FrameScore> actualScores = scoreCalculator.calculateFramesScores(frameScores);
+        assertThat(actualScores)
+                .extracting(FrameScore::getFrameFinalScore)
+                .containsExactlyInAnyOrder(9, 18, 27, 36, 45, 54, 63, 72, 81, 90);
+    }
+
 
     private List<FrameScore> sampleSimpleAllStrikesValidScores() {
         return List.of(
@@ -68,27 +77,16 @@ class BowlingScoreCalculatorTest {
 
     private List<FrameScore> sampleSimpleNoConvertionsValidScores() {
         return List.of(
-                FrameScore.builder().firstChance(4).build(),
-                FrameScore.builder().firstChance(4).build(),
-                FrameScore.builder().firstChance(4).build(),
-                FrameScore.builder().firstChance(4).build(),
-                FrameScore.builder().firstChance(4).build(),
-                FrameScore.builder().firstChance(4).build(),
-                FrameScore.builder().firstChance(4).build(),
-                FrameScore.builder().firstChance(4).build(),
-                FrameScore.builder().firstChance(4).build(),
-                FrameScore.builder().firstChance(4).build(),
-                FrameScore.builder().firstChance(4).build(),
-                FrameScore.builder().firstChance(4).build(),
-                FrameScore.builder().firstChance(4).build(),
-                FrameScore.builder().firstChance(4).build(),
-                FrameScore.builder().firstChance(4).build(),
-                FrameScore.builder().firstChance(4).build(),
-                FrameScore.builder().firstChance(4).build(),
-                FrameScore.builder().firstChance(4).build(),
-                FrameScore.builder().firstChance(4).build(),
-                FrameScore.builder().firstChance(4).build(),
-                FrameScore.builder().firstChance(4).build()
+                FrameScore.builder().firstChance(4).secondChance(5).build(),
+                FrameScore.builder().firstChance(4).secondChance(5).build(),
+                FrameScore.builder().firstChance(4).secondChance(5).build(),
+                FrameScore.builder().firstChance(4).secondChance(5).build(),
+                FrameScore.builder().firstChance(4).secondChance(5).build(),
+                FrameScore.builder().firstChance(4).secondChance(5).build(),
+                FrameScore.builder().firstChance(4).secondChance(5).build(),
+                FrameScore.builder().firstChance(4).secondChance(5).build(),
+                FrameScore.builder().firstChance(4).secondChance(5).build(),
+                FrameScore.builder().firstChance(4).secondChance(5).build()
         );
     }
 }
