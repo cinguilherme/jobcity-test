@@ -38,6 +38,13 @@ class BowlingMatchBuilderTest {
         assertThat(actual).isTrue();
     }
 
+    @Test
+    void should_validate_player_match_with_faults() {
+        List<Chance> johnChances = validChancesWithFaults("John", 20, 4);
+        Boolean actual = subject.validatePlayerMatch(johnChances.stream());
+        assertThat(actual).isTrue();
+    }
+
     private List<Chance> validChances(String playerName, int numChances) {
         List<Chance> res = new ArrayList<>();
         for (int i = 0; i < numChances; i++) {
@@ -57,4 +64,15 @@ class BowlingMatchBuilderTest {
         return res;
     }
 
+
+    private List<Chance> validChancesWithFaults(String playerName, int numChances, int numFaults) {
+        List<Chance> res = new ArrayList<>();
+        for (int i = 0; i < numChances - numFaults; i++) {
+            res.add(Chance.builder().player(playerName).res("4").build());
+        }
+        for (int i = 0; i < numFaults; i++) {
+            res.add(Chance.builder().player(playerName).res("F").build());
+        }
+        return res;
+    }
 }
