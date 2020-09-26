@@ -24,10 +24,18 @@ public class BowlingMatchBuilder implements MatchBuilder {
     }
 
     @Override
-    public Boolean validateMatch(Stream<Chance> chancesStream) {
+    public Boolean validatePlayerMatch(Stream<Chance> chancesStream) {
 
+        return chancesStream.allMatch(this::validateSimpleValues);
 
-        return null;
+    }
+
+    private boolean validateSimpleValues(Chance chance) {
+        String res = chance.getRes();
+
+        return res.equalsIgnoreCase(BowlingRules.Fault) ||
+                (Integer.parseInt(res) >= BowlingRules.MinimalValue &&
+                        Integer.parseInt(res) <= BowlingRules.MaxValue);
     }
 
     @Override

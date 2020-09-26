@@ -31,10 +31,28 @@ class BowlingMatchBuilderTest {
         assertThat(playersChanceMap.get("Jeff")).hasSize(20);
     }
 
+    @Test
+    void should_validate_player_match() {
+        List<Chance> johnChances = validChances("John", 20);
+        Boolean actual = subject.validatePlayerMatch(johnChances.stream());
+        assertThat(actual).isTrue();
+    }
+
     private List<Chance> validChances(String playerName, int numChances) {
         List<Chance> res = new ArrayList<>();
         for (int i = 0; i < numChances; i++) {
             res.add(Chance.builder().player(playerName).res("4").build());
+        }
+        return res;
+    }
+
+    private List<Chance> someInvalidChances(String playerName, int numChances, int numInvalids) {
+        List<Chance> res = new ArrayList<>();
+        for (int i = 0; i < numChances - numInvalids; i++) {
+            res.add(Chance.builder().player(playerName).res("4").build());
+        }
+        for (int i = 0; i < numInvalids; i++) {
+            res.add(Chance.builder().player(playerName).res("14").build());
         }
         return res;
     }
