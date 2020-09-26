@@ -90,6 +90,15 @@ class BowlingMatchBuilderTest {
     }
 
     @Test
+    void shouldConvertPlayersChancesIntoFrameScores_All_Spare() {
+        List<Chance> johnChances = validChancesAllSpare(JOHN, 20);
+        List<FrameScore> playerFrameScores = subject.getPlayersChancesAsFrameScore(johnChances.stream());
+        assertThat(playerFrameScores).hasSize(10);
+        assertThat(playerFrameScores).allMatch(FrameScore::isSpare);
+        assertThat(playerFrameScores).noneMatch(FrameScore::isStrike);
+    }
+    
+    @Test
     void shouldConvertPlayerChancesIntoFrameScores_All_spare() {
 
     }
