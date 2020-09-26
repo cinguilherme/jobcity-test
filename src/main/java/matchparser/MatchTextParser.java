@@ -26,7 +26,10 @@ public class MatchTextParser implements MatchParser {
 
     private Chance toChance(String line) {
         String[] values = line.split(" ");
-        return Chance.builder().player(values[0]).res(values[1]).build();
+        return values.length != 2 ?
+                Chance.builder().error(true).errorStr(line).build()
+                : Chance.builder().player(values[0]).res(values[1]).build();
+
     }
 
     private Optional<List<String>> getFileAsString(String filePath) {
