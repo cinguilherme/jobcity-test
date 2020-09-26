@@ -44,6 +44,29 @@ class BowlingScoreCalculatorTest {
                 .containsExactlyInAnyOrder(9, 18, 27, 36, 45, 54, 63, 72, 81, 90);
     }
 
+    @Test
+    void shouldCaclculateMixedSetOfThrows() {
+        List<FrameScore> frameScores = sampleMixedValidScores();
+        List<FrameScore> actualScores = scoreCalculator.calculateFramesScores(frameScores);
+        assertThat(actualScores)
+                .extracting(FrameScore::getFrameFinalScore)
+                .containsExactlyInAnyOrder(17, 30, 37, 57, 77, 105, 123, 131, 151, 170);
+    }
+
+    private List<FrameScore> sampleMixedValidScores() {
+        return List.of(
+                FrameScore.builder().firstChance(8).secondChance(2).build(),
+                FrameScore.builder().firstChance(7).secondChance(3).build(),
+                FrameScore.builder().firstChance(3).secondChance(4).build(),
+                FrameScore.builder().firstChance(10).build(),
+                FrameScore.builder().firstChance(2).secondChance(8).build(),
+                FrameScore.builder().firstChance(10).build(),
+                FrameScore.builder().firstChance(10).build(),
+                FrameScore.builder().firstChance(8).secondChance(0).build(),
+                FrameScore.builder().firstChance(10).build(),
+                FrameScore.builder().firstChance(8).secondChance(2).frameTenExclusive(9).build()
+        );
+    }
 
     private List<FrameScore> sampleSimpleAllStrikesValidScores() {
         return List.of(
