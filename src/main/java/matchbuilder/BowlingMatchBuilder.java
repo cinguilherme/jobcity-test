@@ -16,9 +16,7 @@ public class BowlingMatchBuilder implements MatchBuilder {
 
         Map<String, List<Chance>> map = new HashMap<>();
         chancesStream.forEach(chance -> {
-            if (map.get(chance.getPlayer()) == null) {
-                map.put(chance.getPlayer(), new ArrayList<>());
-            }
+            map.computeIfAbsent(chance.getPlayer(), k -> new ArrayList<>());
             map.get(chance.getPlayer()).add(chance);
         });
         return map;
@@ -34,21 +32,48 @@ public class BowlingMatchBuilder implements MatchBuilder {
     public List<FrameScore> getPlayersChancesAsFrameScore(Stream<Chance> playerChances) {
         boolean frameOpen = true;
         int lastValue = 0;
+
+        int lastValueTen = 0;
+        boolean lastFirst = false;
+        boolean lastSecond = false;
+        boolean lastThird = false;
+
         List<FrameScore> allFrames = new ArrayList<>();
+        FrameScore.FrameScoreBuilder lastFrame = FrameScore.builder();
 
         for (Chance chance : playerChances.collect(Collectors.toList())) {
-            int value = chance.getRes().equalsIgnoreCase("F") ? 0 : Integer.parseInt(chance.getRes());
-            if (value == 10) {
-                allFrames.add(FrameScore.builder().firstChance(10).build());
-            } else if (value < 10 && frameOpen) {
-                lastValue = value;
-                frameOpen = false;
-            } else {
-                frameOpen = true;
-                allFrames.add(FrameScore.builder().firstChance(lastValue).secondChance(value).build());
+            int value = getResultValue(chance);
+            if (allFrames.size() == 9) { //last frame evaluation
+
+                if (!lastFirst) {
+                    lastFrame.firstChance(value);
+                    lastFirst = true;
+                } else if (!lastSecond) {
+                    lastFrame.secondChance(value);
+                    lastSecond = true;
+                } else if (!lastThird) {
+                    lastFrame.frameTenExclusive(value);
+                    lastThird = true;
+                }
+            } else { // non last frame
+
+                if (value == 10) {
+                    allFrames.add(FrameScore.builder().firstChance(10).build());
+                } else if (value < 10 && frameOpen) {
+                    lastValue = value;
+                    frameOpen = false;
+                } else {
+                    frameOpen = true;
+                    allFrames.add(FrameScore.builder().firstChance(lastValue).secondChance(value).build());
+                }
             }
         }
+        allFrames.add(lastFrame.build());
         return allFrames;
+    }
+
+    private int getResultValue(Chance chance) {
+        return chance.getRes().equalsIgnoreCase("F") ? 0 : Integer.parseInt(chance.getRes());
     }
 
     private boolean validateSimpleValuesLimits(Chance chance) {

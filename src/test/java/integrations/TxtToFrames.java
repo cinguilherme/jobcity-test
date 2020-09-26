@@ -44,7 +44,7 @@ public class TxtToFrames {
         List<List<FrameScore>> allPlayersScores = map.values().stream()
                 .map(playerList -> bowlingMatchBuilder.getPlayersChancesAsFrameScore(playerList.stream()))
                 .collect(toList());
-        assertThat(allPlayersScores).allMatch(scores -> scores.size() == 11);
+        assertThat(allPlayersScores).allMatch(scores -> scores.size() == 10);
     }
 
     @Test
@@ -60,7 +60,7 @@ public class TxtToFrames {
                 .map(playerList -> bowlingMatchBuilder.getPlayersChancesAsFrameScore(playerList.stream()))
                 .collect(toList());
         List<FrameScore> carlScores = allPlayersScores.get(0);
-        assertThat(carlScores).hasSize(12);
+        assertThat(carlScores).hasSize(10);
         assertThat(carlScores).allMatch(FrameScore::isStrike);
     }
 

@@ -2,7 +2,7 @@
 
 ### Requirements
  - Gradle 6.3, gradlew available with the source code
- - Jdk11 / JRE11
+ - Jdk11 / JRE11 (not too much stuff over 1.8)
  - Lombok anotation processor
  - Junit5
 
@@ -89,14 +89,12 @@ java -jar PROGRAM -in scores.txt
                 frame 9 -> [8,2]
                 
                 hipotesis
+                frame 10 -> [2,2, ?] 0 extra-shot
                 frame 10 -> [8,2,9](spare) + 1 extra-shot
                 frame 10 -> [X,2,9](strike) + 2 extra-shot?
                 frame 10 -> [X,X,X](3 strike) + 2 extra-shot?
                 
-                TOTAL: 
-                
-            
-            
+                TOTAL: ????
       
     - The program should output the scoring for the associated game according to these
       guidelines:

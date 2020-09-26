@@ -8,6 +8,7 @@ import lombok.Getter;
 public class FrameScore {
     private int firstChance;
     private int secondChance;
+    private int frameTenExclusive;
 
     public boolean isStrike() {
         return firstChance == 10;
