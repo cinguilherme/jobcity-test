@@ -16,7 +16,7 @@ class MatchTextParserTest {
     private final String emptyResource = "empty.txt";
     private final String badFormatResource = "badlyFormatedFile.txt";
 
-    private MatchTextParser subject;
+    private MatchParser subject;
 
     @BeforeEach
     void setup() {
