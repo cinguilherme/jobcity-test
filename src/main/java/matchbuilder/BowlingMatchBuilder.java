@@ -38,9 +38,9 @@ public class BowlingMatchBuilder implements MatchBuilder {
 
         for (Chance chance : playerChances.collect(Collectors.toList())) {
             int value = chance.getRes().equalsIgnoreCase("F") ? 0 : Integer.parseInt(chance.getRes());
-            if (value == 10) { //strike
+            if (value == 10) {
                 allFrames.add(FrameScore.builder().firstChance(10).build());
-            } else if (value < 10 && frameOpen) { //maybe spare
+            } else if (value < 10 && frameOpen) {
                 lastValue = value;
                 frameOpen = false;
             } else {
