@@ -11,7 +11,8 @@ public class FrameScore {
     private int secondChance;
     private int frameTenExclusive;
     private int frameFinalScore;
-
+    private boolean isFinalFrame;
+    
     public boolean isStrike() {
         return firstChance == 10;
     }

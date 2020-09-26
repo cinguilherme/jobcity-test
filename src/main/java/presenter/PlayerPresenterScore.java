@@ -5,11 +5,9 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class PlayerScore {
-
-    private Integer frame;
+public class PlayerPresenterScore {
+    private String frame;
     private String playerName;
-    private String pitFalls;
+    private String pinFalls;
     private String score;
-
 }

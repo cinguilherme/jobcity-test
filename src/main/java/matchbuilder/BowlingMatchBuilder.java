@@ -32,8 +32,6 @@ public class BowlingMatchBuilder implements MatchBuilder {
     public List<FrameScore> getPlayersChancesAsFrameScore(Stream<Chance> playerChances) {
         boolean frameOpen = true;
         int lastValue = 0;
-
-        int lastValueTen = 0;
         boolean lastFirst = false;
         boolean lastSecond = false;
         boolean lastThird = false;
@@ -44,7 +42,7 @@ public class BowlingMatchBuilder implements MatchBuilder {
         for (Chance chance : playerChances.collect(Collectors.toList())) {
             int value = getResultValue(chance);
             if (allFrames.size() == 9) { //last frame evaluation
-
+                lastFrame.isFinalFrame(true);
                 if (!lastFirst) {
                     lastFrame.firstChance(value);
                     lastFirst = true;

@@ -1,10 +1,11 @@
 package presenter;
 
-import scorecalculator.Score;
+import matchbuilder.FrameScore;
+
+import java.util.List;
 
 public interface MatchScorePresenter {
 
-    PlayerScore presentPlayerScore(Score calculatedScore);
-    
+    PlayerPresenterScore presentPlayerScore(String playerName, List<FrameScore> calculatedScore);
 
 }
