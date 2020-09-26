@@ -10,8 +10,12 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.tuple;
 
 class BowlingMatchBuilderTest {
+
+    public static final String JOHN = "John";
+    public static final String JEFF = "Jeff";
 
     private MatchBuilder subject;
 
@@ -22,33 +26,94 @@ class BowlingMatchBuilderTest {
 
     @Test
     void should_map_players_with_chances() {
-        List<Chance> johnChances = validChances("John", 20);
-        List<Chance> jeffChances = validChances("Jeff", 20);
+        List<Chance> johnChances = validChances(JOHN, 20);
+        List<Chance> jeffChances = validChances(JEFF, 10);
         Stream<Chance> allChances = Stream.concat(johnChances.stream(), jeffChances.stream());
         Map<String, List<Chance>> playersChanceMap = subject.mapPlayersChance(allChances);
         assertThat(playersChanceMap).isNotEmpty();
-        assertThat(playersChanceMap.get("John")).hasSize(20);
-        assertThat(playersChanceMap.get("Jeff")).hasSize(20);
+        assertThat(playersChanceMap.get(JOHN)).hasSize(20);
+        assertThat(playersChanceMap.get(JEFF)).hasSize(10);
     }
 
     @Test
     void should_validate_player_match() {
-        List<Chance> johnChances = validChances("John", 20);
-        Boolean actual = subject.validatePlayerMatch(johnChances.stream());
+        List<Chance> johnChances = validChances(JOHN, 20);
+        Boolean actual = subject.validatePlayerMatchData(johnChances.stream());
         assertThat(actual).isTrue();
     }
 
     @Test
     void should_validate_player_match_with_faults() {
-        List<Chance> johnChances = validChancesWithFaults("John", 20, 4);
-        Boolean actual = subject.validatePlayerMatch(johnChances.stream());
+        List<Chance> johnChances = validChancesWithFaults(JOHN, 20, 4);
+        Boolean actual = subject.validatePlayerMatchData(johnChances.stream());
         assertThat(actual).isTrue();
+    }
+
+    @Test
+    void should_validate_player_match_with_all_faults() {
+        List<Chance> johnChances = validChancesWithFaults(JOHN, 20, 20);
+        Boolean actual = subject.validatePlayerMatchData(johnChances.stream());
+        assertThat(actual).isTrue();
+    }
+
+    @Test
+    void shouldConvertPlayersChancesIntoFrameScores_All_Faults() {
+        List<Chance> johnChances = validChancesWithFaults(JOHN, 20, 20);
+        List<FrameScore> playerFrameScores = subject.getPlayersChancesAsFrameScore(johnChances.stream());
+        assertThat(playerFrameScores).hasSize(10);
+        assertThat(playerFrameScores).noneMatch(FrameScore::isSpare);
+        assertThat(playerFrameScores).noneMatch(FrameScore::isStrike);
+        assertThat(playerFrameScores).allMatch(f -> f.getFirstChance() == 0);
+        assertThat(playerFrameScores).allMatch(f -> f.getSecondChance() == 0);
+    }
+
+    @Test
+    void shouldConvertPlayersChancesIntoFrameScores_Some_Faults() {
+        List<Chance> johnChances = validChancesWithFaults(JOHN, 20, 4);
+        List<FrameScore> playerFrameScores = subject.getPlayersChancesAsFrameScore(johnChances.stream());
+        assertThat(playerFrameScores).hasSize(10);
+        assertThat(playerFrameScores).noneMatch(FrameScore::isSpare);
+        assertThat(playerFrameScores).noneMatch(FrameScore::isStrike);
+        assertThat(playerFrameScores).extracting(FrameScore::getFirstChance, FrameScore::getSecondChance)
+                .contains(tuple(4, 4), tuple(0, 0));
+        assertThat(playerFrameScores).noneMatch(f -> f.getFirstChance() > 4 && f.getSecondChance() > 4);
+        assertThat(playerFrameScores).noneMatch(f -> f.getFirstChance() < 0 && f.getSecondChance() < 0);
+    }
+
+    @Test
+    void shouldConvertPlayersChancesIntoFrameScores_All_Strikes() {
+        List<Chance> johnChances = validChancesAllStrikes(JOHN, 20);
+        List<FrameScore> playerFrameScores = subject.getPlayersChancesAsFrameScore(johnChances.stream());
+        assertThat(playerFrameScores).hasSize(20);
+        assertThat(playerFrameScores).noneMatch(FrameScore::isSpare);
+        assertThat(playerFrameScores).allMatch(FrameScore::isStrike);
+    }
+
+    @Test
+    void shouldConvertPlayerChancesIntoFrameScores_All_spare() {
+
     }
 
     private List<Chance> validChances(String playerName, int numChances) {
         List<Chance> res = new ArrayList<>();
         for (int i = 0; i < numChances; i++) {
             res.add(Chance.builder().player(playerName).res("4").build());
+        }
+        return res;
+    }
+
+    private List<Chance> validChancesAllStrikes(String playerName, int numChances) {
+        List<Chance> res = new ArrayList<>();
+        for (int i = 0; i < numChances; i++) {
+            res.add(Chance.builder().player(playerName).res("10").build());
+        }
+        return res;
+    }
+
+    private List<Chance> validChancesAllSpare(String playerName, int numChances) {
+        List<Chance> res = new ArrayList<>();
+        for (int i = 0; i < numChances; i++) {
+            res.add(Chance.builder().player(playerName).res("5").build());
         }
         return res;
     }

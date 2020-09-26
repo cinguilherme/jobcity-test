@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class BowlingMatchBuilder implements MatchBuilder {
@@ -24,13 +25,33 @@ public class BowlingMatchBuilder implements MatchBuilder {
     }
 
     @Override
-    public Boolean validatePlayerMatch(Stream<Chance> chancesStream) {
+    public Boolean validatePlayerMatchData(Stream<Chance> chancesStream) {
 
-        return chancesStream.allMatch(this::validateSimpleValues);
-
+        return chancesStream.allMatch(this::validateSimpleValuesLimits);
     }
 
-    private boolean validateSimpleValues(Chance chance) {
+    @Override
+    public List<FrameScore> getPlayersChancesAsFrameScore(Stream<Chance> playerChances) {
+        boolean frameOpen = true;
+        int lastValue = 0;
+        List<FrameScore> allFrames = new ArrayList<>();
+
+        for (Chance chance : playerChances.collect(Collectors.toList())) {
+            int value = chance.getRes().equalsIgnoreCase("F") ? 0 : Integer.parseInt(chance.getRes());
+            if (value == 10) { //strike
+                allFrames.add(FrameScore.builder().firstChance(10).build());
+            } else if (value < 10 && frameOpen) { //maybe spare
+                lastValue = value;
+                frameOpen = false;
+            } else {
+                frameOpen = true;
+                allFrames.add(FrameScore.builder().firstChance(lastValue).secondChance(value).build());
+            }
+        }
+        return allFrames;
+    }
+
+    private boolean validateSimpleValuesLimits(Chance chance) {
         String res = chance.getRes();
 
         return res.equalsIgnoreCase(BowlingRules.Fault) ||

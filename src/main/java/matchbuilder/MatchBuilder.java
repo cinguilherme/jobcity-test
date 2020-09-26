@@ -7,9 +7,11 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 public interface MatchBuilder {
-    public Map<String, List<Chance>> mapPlayersChance(Stream<Chance> chancesStream);
+    Map<String, List<Chance>> mapPlayersChance(Stream<Chance> chancesStream);
 
-    public Boolean validatePlayerMatch(Stream<Chance> chancesStream);
+    Boolean validatePlayerMatchData(Stream<Chance> chancesStream);
 
-    public List<PlayerScore> producePlayersScores(Stream<Chance> chanceStream);
+    List<FrameScore> getPlayersChancesAsFrameScore(Stream<Chance> playerChances);
+
+    List<PlayerScore> producePlayersScores(Stream<Chance> chanceStream);
 }
