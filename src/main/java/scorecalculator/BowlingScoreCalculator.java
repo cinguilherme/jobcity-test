@@ -34,8 +34,14 @@ public class BowlingScoreCalculator implements ScoreCalculator {
         return calculatedFrames;
     }
 
-    private FrameScore getFrameScoreSpare(List<FrameScore> frameScores, int lastSum, int i, FrameScore current) {
-        int nextBall = frameScores.get(i + 1).getFirstChance();
+    private FrameScore getFrameScoreSpare(List<FrameScore> frameScores, int lastSum, int frameIndex, FrameScore current) {
+        int nextBall;
+        if (frameIndex == 9) { //last frame
+            nextBall = current.getFrameTenExclusive();
+        } else {
+            nextBall = frameScores.get(frameIndex + 1).getFirstChance();
+        }
+
         return calculateSpareFrameWith(lastSum, current, nextBall);
     }
 
