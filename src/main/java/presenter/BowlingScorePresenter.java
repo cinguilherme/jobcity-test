@@ -62,23 +62,6 @@ public class BowlingScorePresenter implements MatchScorePresenter {
                 .reduce("Score", (acc, cur) -> acc + DOUBLE_TAB + cur);
     }
 
-    private String getCharRepresentation(FrameScore frameScore) {
-        if (frameScore.isStrike()) return "\tX";
-        else if (frameScore.isSpare()) return getRegularValueString(frameScore.getFirstChance()) + "\t/";
-        else {
-            return getRegularValueString(frameScore.getFirstChance()) +
-                    TAB +
-                    getRegularValueString(frameScore.getSecondChance());
-        }
-    }
-
-    private String getLastFrameRepresentation(FrameScore frameScore) {
-        return getRegularValueString(
-                frameScore.getFirstChance()) + TAB +
-                getRegularValueString(frameScore.getSecondChance()) + TAB +
-                getRegularValueString(frameScore.getFrameTenExclusive());
-    }
-
     private String getRegularValueString(int value) {
         if (value == 0) return "-";
         return String.valueOf(value);

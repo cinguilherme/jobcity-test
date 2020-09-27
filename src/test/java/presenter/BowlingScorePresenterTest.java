@@ -51,6 +51,23 @@ class BowlingScorePresenterTest {
                 .containsExactlyInAnyOrder(expected_Pinfalls, expectedFrameLine, expectePlayerLine, expected___Scores);
     }
 
+    @Test
+    void shouldPresentCorrecly_all_no_convertions_results() {
+        String player = "Max";
+        List<FrameScore> frameScores = sampleSimpleNoConvertionsValidScores();
+        PlayerPresenterScore presentScore = scorePresenter.presentPlayerScore(player, frameScores);
+
+        String expectedFrameLine = "Frame\t\t1\t\t2\t\t3\t\t4\t\t5\t\t6\t\t7\t\t8\t\t9\t\t10";
+        String expectePlayerLine = "Max";
+        String expected_Pinfalls = "Pinfalls\t4\t5\t4\t5\t4\t5\t4\t5\t4\t5\t4\t5\t4\t5\t4\t5\t4\t5\t4\t5";
+        String expected___Scores = "Score\t\t9\t\t18\t\t27\t\t36\t\t45\t\t54\t\t63\t\t72\t\t81\t\t90";
+
+        assertThat(presentScore)
+                .extracting(PlayerPresenterScore::getFrame, PlayerPresenterScore::getPinFalls,
+                        PlayerPresenterScore::getScore, PlayerPresenterScore::getPlayerName)
+                .containsExactlyInAnyOrder(expected_Pinfalls, expectedFrameLine, expectePlayerLine, expected___Scores);
+    }
+
     private List<FrameScore> sampleMixedValidScores() {
         return List.of(
                 FrameScore.builder().firstChance(8).secondChance(2).build(),
@@ -100,16 +117,17 @@ class BowlingScorePresenterTest {
 
     private List<FrameScore> sampleSimpleNoConvertionsValidScores() {
         return List.of(
-                FrameScore.builder().firstChance(4).secondChance(5).build(),
-                FrameScore.builder().firstChance(4).secondChance(5).build(),
-                FrameScore.builder().firstChance(4).secondChance(5).build(),
-                FrameScore.builder().firstChance(4).secondChance(5).build(),
-                FrameScore.builder().firstChance(4).secondChance(5).build(),
-                FrameScore.builder().firstChance(4).secondChance(5).build(),
-                FrameScore.builder().firstChance(4).secondChance(5).build(),
-                FrameScore.builder().firstChance(4).secondChance(5).build(),
-                FrameScore.builder().firstChance(4).secondChance(5).build(),
-                FrameScore.builder().firstChance(4).secondChance(5).build()
+                FrameScore.builder().firstChance(4).secondChance(5).playerName("Max").frameFinalScore(9).build(),
+                FrameScore.builder().firstChance(4).secondChance(5).playerName("Max").frameFinalScore(18).build(),
+                FrameScore.builder().firstChance(4).secondChance(5).playerName("Max").frameFinalScore(27).build(),
+                FrameScore.builder().firstChance(4).secondChance(5).playerName("Max").frameFinalScore(36).build(),
+                FrameScore.builder().firstChance(4).secondChance(5).playerName("Max").frameFinalScore(45).build(),
+                FrameScore.builder().firstChance(4).secondChance(5).playerName("Max").frameFinalScore(54).build(),
+                FrameScore.builder().firstChance(4).secondChance(5).playerName("Max").frameFinalScore(63).build(),
+                FrameScore.builder().firstChance(4).secondChance(5).playerName("Max").frameFinalScore(72).build(),
+                FrameScore.builder().firstChance(4).secondChance(5).playerName("Max").frameFinalScore(81).build(),
+                FrameScore.builder().firstChance(4).secondChance(5).playerName("Max")
+                        .frameFinalScore(90).isFinalFrame(true).build()
         );
     }
 
