@@ -21,3 +21,6 @@ run-sample-one:
 
 run-sample-two:
 	gradlew run --args='firstMatch_sample.txt secondMatch.txt badlyFormatedFile.txt'
+
+unlock-gradle:
+	chmod +x gradlew
