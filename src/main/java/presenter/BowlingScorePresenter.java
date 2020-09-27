@@ -10,10 +10,15 @@ public class BowlingScorePresenter implements MatchScorePresenter {
     public static final String TAB = "\t";
 
     @Override
-    public PlayerPresenterScore presentPlayerScore(String playerName, List<FrameScore> calculatedScore) {
+    public PlayerPresenterScore presentPlayerScore(List<FrameScore> calculatedScore) {
+        String playerNameExtracted = calculatedScore.stream()
+                .filter(frame -> frame.getPlayerName() != null && !frame.getPlayerName().isBlank())
+                .map(FrameScore::getPlayerName)
+                .findFirst()
+                .orElseGet(() -> "Player name not supplied");
 
         return PlayerPresenterScore.builder()
-                .playerName(playerName)
+                .playerName(playerNameExtracted)
                 .frame("Frame\t\t1\t\t2\t\t3\t\t4\t\t5\t\t6\t\t7\t\t8\t\t9\t\t10")
                 .score(buildScorePresentedString(calculatedScore))
                 .pinFalls(buildPinFalls(calculatedScore))

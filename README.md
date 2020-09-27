@@ -2,6 +2,7 @@
 
 ### Requirements
  - Gradle 6.3, !! gradlew available with the source code, just user appropriate command according to Makefile
+    -   GrandleW(Graddle Wrapper)
  - Jdk11 / JRE11 (not too much fancy stuff not present in JDK8)
  - Lombok anotation processor
  - Junit5
@@ -29,23 +30,18 @@ gradlew build on windows
  - all usefull commands shortcuts are in the Makefile such as build, test, clean, etc
 
 #### Usefull commands
- - Makefile e.g "make test" windows, "make test-l" linux or mac
+   - all gradlew commands should run on linux and mac with the additional "./" before the command
+   - Makefile e.g "make test" windows, "make test-l" linux or mac
 
 #### How to run?
 ```
 make run-sample-one
 ```
 - aditional test cases?
-add new files to the matchesFiles, an run with grande
+add new files to the matchesFiles directory and run with grande
 ```
 gradlew run --args='my_custon_match_file.txt'
 ```
-
-#### pure java program execution? build project and have the Jar available
-```
-java -jar PROGRAM -in scores.txt 
-```
-
 
 #### TODO list
 

@@ -53,7 +53,10 @@ public class Main {
                         .map(bowlingMatchBuilder::getPlayersChancesAsFrameScore)
                         .map(scoreCalculator::calculateFramesScores).collect(toList());
 
-                
+                allPlayersScores.forEach(list -> {
+                    System.out.println("------------------------------------------------------------------------------------------");
+                    presenter.presentPlayerScore(list).presentConsole();
+                });
             }
 
         });

@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface MatchScorePresenter {
 
-    PlayerPresenterScore presentPlayerScore(String playerName, List<FrameScore> calculatedScore);
+    PlayerPresenterScore presentPlayerScore(List<FrameScore> calculatedScore);
 
 }

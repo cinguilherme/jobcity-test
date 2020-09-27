@@ -67,8 +67,8 @@ public class TxtToFramesIntegrationTest {
         assertThat(johnScores.get(9).getFrameFinalScore()).isEqualTo(151);
         assertThat(jeffScores.get(9).getFrameFinalScore()).isEqualTo(151);
 
-        presenter.presentPlayerScore("John", johnScores).presentConsole();
-        presenter.presentPlayerScore("Jeff", jeffScores).presentConsole();
+        presenter.presentPlayerScore(johnScores).presentConsole();
+        presenter.presentPlayerScore(jeffScores).presentConsole();
 
     }
 
@@ -93,7 +93,7 @@ public class TxtToFramesIntegrationTest {
         List<FrameScore> frameScoresCalculated = scoreCalculator.calculateFramesScores(carlScores);
         assertThat(frameScoresCalculated.get(9).getFrameFinalScore()).isEqualTo(300);
 
-        presenter.presentPlayerScore("Carl", frameScoresCalculated).presentConsole();
+        presenter.presentPlayerScore(frameScoresCalculated).presentConsole();
     }
 
     @Test

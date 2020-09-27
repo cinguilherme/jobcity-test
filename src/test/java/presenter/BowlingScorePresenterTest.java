@@ -19,9 +19,8 @@ class BowlingScorePresenterTest {
 
     @Test
     void shouldPresentCorrectly_perfect_score() {
-        String playerName = "Jeff";
-        List<FrameScore> frameScores = sampleSimpleAllStrikesValidCalculatedScores();
-        PlayerPresenterScore presentScore = scorePresenter.presentPlayerScore(playerName, frameScores);
+        List<FrameScore> frameScores = sampleSimpleAllStrikesValidCalculatedScores("Jeff");
+        PlayerPresenterScore presentScore = scorePresenter.presentPlayerScore(frameScores);
 
         String expectedFrameLine = "Frame\t\t1\t\t2\t\t3\t\t4\t\t5\t\t6\t\t7\t\t8\t\t9\t\t10";
         String expectePlayerLine = "Jeff";
@@ -36,9 +35,8 @@ class BowlingScorePresenterTest {
 
     @Test
     void shouldPresentCorrecly_all_spare_results() {
-        String player = "Jeff";
-        List<FrameScore> frameScores = sampleSimpleAllSpareValidScores();
-        PlayerPresenterScore presentScore = scorePresenter.presentPlayerScore(player, frameScores);
+        List<FrameScore> frameScores = sampleSimpleAllSpareValidScores("Jeff");
+        PlayerPresenterScore presentScore = scorePresenter.presentPlayerScore(frameScores);
 
         String expectedFrameLine = "Frame\t\t1\t\t2\t\t3\t\t4\t\t5\t\t6\t\t7\t\t8\t\t9\t\t10";
         String expectePlayerLine = "Jeff";
@@ -55,7 +53,7 @@ class BowlingScorePresenterTest {
     void shouldPresentCorrecly_all_no_convertions_results() {
         String player = "Max";
         List<FrameScore> frameScores = sampleSimpleNoConvertionsValidScores();
-        PlayerPresenterScore presentScore = scorePresenter.presentPlayerScore(player, frameScores);
+        PlayerPresenterScore presentScore = scorePresenter.presentPlayerScore(frameScores);
 
         String expectedFrameLine = "Frame\t\t1\t\t2\t\t3\t\t4\t\t5\t\t6\t\t7\t\t8\t\t9\t\t10";
         String expectePlayerLine = "Max";
@@ -72,7 +70,7 @@ class BowlingScorePresenterTest {
     void shouldPresentCorrecly_all_mix_results() {
         String player = "Mix";
         List<FrameScore> frameScores = sampleMixedValidScores();
-        PlayerPresenterScore presentScore = scorePresenter.presentPlayerScore(player, frameScores);
+        PlayerPresenterScore presentScore = scorePresenter.presentPlayerScore(frameScores);
 
         String expectedFrameLine = "Frame\t\t1\t\t2\t\t3\t\t4\t\t5\t\t6\t\t7\t\t8\t\t9\t\t10";
         String expectePlayerLine = "Mix";
@@ -110,34 +108,34 @@ class BowlingScorePresenterTest {
         );
     }
 
-    private List<FrameScore> sampleSimpleAllStrikesValidCalculatedScores() {
+    private List<FrameScore> sampleSimpleAllStrikesValidCalculatedScores(String playerName) {
         return List.of(
-                FrameScore.builder().firstChance(10).frameFinalScore(30).build(),
-                FrameScore.builder().firstChance(10).frameFinalScore(60).build(),
-                FrameScore.builder().firstChance(10).frameFinalScore(90).build(),
-                FrameScore.builder().firstChance(10).frameFinalScore(120).build(),
-                FrameScore.builder().firstChance(10).frameFinalScore(150).build(),
-                FrameScore.builder().firstChance(10).frameFinalScore(180).build(),
-                FrameScore.builder().firstChance(10).frameFinalScore(210).build(),
-                FrameScore.builder().firstChance(10).frameFinalScore(240).build(),
-                FrameScore.builder().firstChance(10).frameFinalScore(270).build(),
-                FrameScore.builder().isFinalFrame(true).firstChance(10).secondChance(10)
+                FrameScore.builder().playerName(playerName).firstChance(10).frameFinalScore(30).build(),
+                FrameScore.builder().playerName(playerName).firstChance(10).frameFinalScore(60).build(),
+                FrameScore.builder().playerName(playerName).firstChance(10).frameFinalScore(90).build(),
+                FrameScore.builder().playerName(playerName).firstChance(10).frameFinalScore(120).build(),
+                FrameScore.builder().playerName(playerName).firstChance(10).frameFinalScore(150).build(),
+                FrameScore.builder().playerName(playerName).firstChance(10).frameFinalScore(180).build(),
+                FrameScore.builder().playerName(playerName).firstChance(10).frameFinalScore(210).build(),
+                FrameScore.builder().playerName(playerName).firstChance(10).frameFinalScore(240).build(),
+                FrameScore.builder().playerName(playerName).firstChance(10).frameFinalScore(270).build(),
+                FrameScore.builder().playerName(playerName).isFinalFrame(true).firstChance(10).secondChance(10)
                         .frameTenExclusive(10).frameFinalScore(300).build()
         );
     }
 
-    private List<FrameScore> sampleSimpleAllSpareValidScores() {
+    private List<FrameScore> sampleSimpleAllSpareValidScores(String playerName) {
         return List.of(
-                FrameScore.builder().firstChance(5).secondChance(5).frameFinalScore(15).build(),
-                FrameScore.builder().firstChance(5).secondChance(5).frameFinalScore(30).build(),
-                FrameScore.builder().firstChance(5).secondChance(5).frameFinalScore(45).build(),
-                FrameScore.builder().firstChance(5).secondChance(5).frameFinalScore(60).build(),
-                FrameScore.builder().firstChance(5).secondChance(5).frameFinalScore(75).build(),
-                FrameScore.builder().firstChance(5).secondChance(5).frameFinalScore(90).build(),
-                FrameScore.builder().firstChance(5).secondChance(5).frameFinalScore(105).build(),
-                FrameScore.builder().firstChance(5).secondChance(5).frameFinalScore(120).build(),
-                FrameScore.builder().firstChance(5).secondChance(5).frameFinalScore(135).build(),
-                FrameScore.builder().firstChance(5).secondChance(5)
+                FrameScore.builder().playerName(playerName).firstChance(5).secondChance(5).frameFinalScore(15).build(),
+                FrameScore.builder().playerName(playerName).firstChance(5).secondChance(5).frameFinalScore(30).build(),
+                FrameScore.builder().playerName(playerName).firstChance(5).secondChance(5).frameFinalScore(45).build(),
+                FrameScore.builder().playerName(playerName).firstChance(5).secondChance(5).frameFinalScore(60).build(),
+                FrameScore.builder().playerName(playerName).firstChance(5).secondChance(5).frameFinalScore(75).build(),
+                FrameScore.builder().playerName(playerName).firstChance(5).secondChance(5).frameFinalScore(90).build(),
+                FrameScore.builder().playerName(playerName).firstChance(5).secondChance(5).frameFinalScore(105).build(),
+                FrameScore.builder().playerName(playerName).firstChance(5).secondChance(5).frameFinalScore(120).build(),
+                FrameScore.builder().playerName(playerName).firstChance(5).secondChance(5).frameFinalScore(135).build(),
+                FrameScore.builder().playerName(playerName).firstChance(5).secondChance(5)
                         .isFinalFrame(true).frameTenExclusive(5).frameFinalScore(150).build()
         );
     }
