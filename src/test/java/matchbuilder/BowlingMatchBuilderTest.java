@@ -124,13 +124,10 @@ class BowlingMatchBuilderTest {
     }
 
     @Test
-    void shouldHaveLastFrameValid_with_spare() {
-
-    }
-
-    @Test
-    void shouldHaveLastFrameValid_with_strike() {
-
+    void shouldDetectErrors() {
+        List<Chance> err = someBadlyConstructedChances("Err", 10);
+        Boolean actual = subject.validateDoesNotHaveErrors(err);
+        assertThat(actual).isFalse();
     }
 
     private List<Chance> validChances(String playerName, int numChances) {
@@ -154,6 +151,15 @@ class BowlingMatchBuilderTest {
         for (int i = 0; i < numChances; i++) {
             res.add(Chance.builder().player(playerName).res("5").build());
         }
+        return res;
+    }
+
+    private List<Chance> someBadlyConstructedChances(String playerName, int numChances) {
+        List<Chance> res = new ArrayList<>();
+        for (int i = 0; i < numChances; i++) {
+            res.add(Chance.builder().player(playerName).errorStr("Some error").error(true).res("4").build());
+        }
+
         return res;
     }
 

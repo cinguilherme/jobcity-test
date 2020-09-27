@@ -42,10 +42,8 @@ public class Main {
             String filePath = workdir + "\\matchesFiles\\" + fPath;
             System.out.println("File path: " + filePath);
             List<Chance> chanceStream = fileParser.parseInput(filePath);
-            Boolean isValidData = bowlingMatchBuilder.validatePlayerMatchData(chanceStream);
-            System.out.println("is valid data? " + isValidData);
-
-            if (isValidData) {
+            if (bowlingMatchBuilder.validateDoesNotHaveErrors(chanceStream) &&
+                    bowlingMatchBuilder.validatePlayerMatchData(chanceStream)) {
 
                 Map<String, List<Chance>> playersMap = bowlingMatchBuilder.mapPlayersChance(chanceStream);
 
@@ -57,10 +55,11 @@ public class Main {
                     System.out.println("------------------------------------------------------------------------------------------");
                     presenter.presentPlayerScore(list).presentConsole();
                 });
+
+            } else {
+                System.out.println("#################################################################");
+                System.out.println("Invalid data for file: " + fPath);
             }
-
         });
-
     }
-
 }

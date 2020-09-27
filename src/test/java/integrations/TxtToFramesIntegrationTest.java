@@ -48,6 +48,8 @@ public class TxtToFramesIntegrationTest {
 
         List<Chance> chanceStream = matchTextParser.parseInput(resource);
         Map<String, List<Chance>> map = bowlingMatchBuilder.mapPlayersChance(chanceStream);
+        List<Boolean> errors = map.values().stream().map(l -> bowlingMatchBuilder.validateDoesNotHaveErrors(l)).collect(toList());
+        assertThat(errors).allMatch(e -> e);
 
         List<Boolean> validDatas = map.values().stream().map(playerList -> bowlingMatchBuilder.validatePlayerMatchData(playerList)).collect(toList());
         assertThat(validDatas).allMatch(hasToBeTrue -> hasToBeTrue);
@@ -80,6 +82,9 @@ public class TxtToFramesIntegrationTest {
         List<Chance> chanceStream = matchTextParser.parseInput(resource);
         Map<String, List<Chance>> map = bowlingMatchBuilder.mapPlayersChance(chanceStream);
 
+        List<Boolean> errors = map.values().stream().map(l -> bowlingMatchBuilder.validateDoesNotHaveErrors(l)).collect(toList());
+        assertThat(errors).allMatch(e -> e);
+
         List<Boolean> validDatas = map.values().stream().map(playerList -> bowlingMatchBuilder.validatePlayerMatchData(playerList)).collect(toList());
         assertThat(validDatas).allMatch(hasToBeTrue -> hasToBeTrue);
 
@@ -102,6 +107,9 @@ public class TxtToFramesIntegrationTest {
         String resource = classLoader.getResource(emptyMatchResource).getFile();
         List<Chance> chanceStream = matchTextParser.parseInput(resource);
         Map<String, List<Chance>> map = bowlingMatchBuilder.mapPlayersChance(chanceStream);
+
+        List<Boolean> errors = map.values().stream().map(l -> bowlingMatchBuilder.validateDoesNotHaveErrors(l)).collect(toList());
+        assertThat(errors).allMatch(e -> !e);
 
         List<Boolean> validDatas = map.values().stream()
                 .map(playerList -> bowlingMatchBuilder.validatePlayerMatchData(playerList))

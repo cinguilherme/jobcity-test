@@ -21,6 +21,11 @@ public class BowlingMatchBuilder implements MatchBuilder {
     }
 
     @Override
+    public Boolean validateDoesNotHaveErrors(List<Chance> chances) {
+        return chances.stream().noneMatch(Chance::isError);
+    }
+
+    @Override
     public Boolean validatePlayerMatchData(List<Chance> chancesStream) {
         return chancesStream.stream().allMatch(this::validateSimpleValuesLimits);
     }
