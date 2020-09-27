@@ -6,7 +6,7 @@
  - Junit5
  - Gradle 6.3, all abouve dependencies will be taken care by gradle via gralde.build specifications
     - gradlew does not have execution privilege on mac/linux on this source. 
-        Make it executable however by preferable way, sample "chmod 777 gradlew".
+        Make it executable however by preferable way, sample "chmod 777 gradlew" or "chmod +x gradlew".
     - !! gradlew available with the source code, just user appropriate command according to Makefile
     -   GrandleW(Graddle Wrapper) it will download the gradle required by it self. 
         But having the correct JDK for the gradle is required. 
