@@ -9,15 +9,18 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import static java.util.stream.Collectors.toList;
+
 public class MatchTextParser implements MatchParser {
 
     public static final String UTF_8 = "UTF-8";
 
     @Override
-    public Stream<Chance> parseInput(String filePath) {
+    public List<Chance> parseInput(String filePath) {
         return getFileAsString(filePath)
                 .map(this::toStreamOfChance)
-                .orElse(Stream.empty());
+                .orElse(Stream.empty())
+                .collect(toList());
     }
 
     private Stream<Chance> toStreamOfChance(List<String> strings) {

@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.Objects;
 
-import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class MatchTextParserTest {
@@ -27,7 +26,7 @@ class MatchTextParserTest {
     void shouldParse_txtFile_with_valid_format() {
         String filePath = firstMatchResource;
 
-        List<Chance> chanceActual = subject.parseInput(filePath).collect(toList());
+        List<Chance> chanceActual = subject.parseInput(filePath);
 
         int linesExpected = 35;
         assertThat(chanceActual.size()).isEqualTo(linesExpected);
@@ -41,7 +40,7 @@ class MatchTextParserTest {
     void shouldParse_txtFile_with_valid_format_secondMatch() {
         String filePath = secondMatchResource;
 
-        List<Chance> chanceActual = subject.parseInput(filePath).collect(toList());
+        List<Chance> chanceActual = subject.parseInput(filePath);
 
         int linesExpected = 12;
         assertThat(chanceActual.size()).isEqualTo(linesExpected);
@@ -55,7 +54,7 @@ class MatchTextParserTest {
     void shouldParse_txtFile_with_no_data_and_return_empty() {
         String filePath = emptyResource;
 
-        List<Chance> chanceActual = subject.parseInput(filePath).collect(toList());
+        List<Chance> chanceActual = subject.parseInput(filePath);
 
         int linesExpected = 0;
         assertThat(chanceActual.size()).isEqualTo(linesExpected);
@@ -65,7 +64,7 @@ class MatchTextParserTest {
     void shouldParse_txtFile_with_bad_formatted_text_and_return_empty() {
         String filePath = badFormatResource;
 
-        List<Chance> chanceActual = subject.parseInput(filePath).collect(toList());
+        List<Chance> chanceActual = subject.parseInput(filePath);
 
         int linesExpected = 29;
         assertThat(chanceActual.size()).isEqualTo(linesExpected);

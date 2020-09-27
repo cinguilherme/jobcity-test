@@ -6,13 +6,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class BowlingMatchBuilder implements MatchBuilder {
 
     @Override
-    public Map<String, List<Chance>> mapPlayersChance(Stream<Chance> chancesStream) {
+    public Map<String, List<Chance>> mapPlayersChance(List<Chance> chancesStream) {
 
         Map<String, List<Chance>> map = new HashMap<>();
         chancesStream.forEach(chance -> {
@@ -23,13 +21,12 @@ public class BowlingMatchBuilder implements MatchBuilder {
     }
 
     @Override
-    public Boolean validatePlayerMatchData(Stream<Chance> chancesStream) {
-
-        return chancesStream.allMatch(this::validateSimpleValuesLimits);
+    public Boolean validatePlayerMatchData(List<Chance> chancesStream) {
+        return chancesStream.stream().allMatch(this::validateSimpleValuesLimits);
     }
 
     @Override
-    public List<FrameScore> getPlayersChancesAsFrameScore(Stream<Chance> playerChances) {
+    public List<FrameScore> getPlayersChancesAsFrameScore(List<Chance> playerChances) {
         boolean frameOpen = true;
         int lastValue = 0;
         boolean lastFirst = false;
@@ -39,7 +36,8 @@ public class BowlingMatchBuilder implements MatchBuilder {
         List<FrameScore> allFrames = new ArrayList<>();
         FrameScore.FrameScoreBuilder lastFrame = FrameScore.builder();
 
-        for (Chance chance : playerChances.collect(Collectors.toList())) {
+        for (Chance chance : playerChances) {
+            lastFrame.playerName(chance.getPlayer());
             int value = getResultValue(chance);
             if (allFrames.size() == 9) { //last frame evaluation
                 lastFrame.isFinalFrame(true);
@@ -55,14 +53,15 @@ public class BowlingMatchBuilder implements MatchBuilder {
                 }
             } else { // non last frame
 
+                FrameScore.FrameScoreBuilder builder = FrameScore.builder().playerName(chance.getPlayer());
                 if (value == 10) {
-                    allFrames.add(FrameScore.builder().firstChance(10).build());
+                    allFrames.add(builder.firstChance(10).build());
                 } else if (value < 10 && frameOpen) {
                     lastValue = value;
                     frameOpen = false;
                 } else {
                     frameOpen = true;
-                    allFrames.add(FrameScore.builder().firstChance(lastValue).secondChance(value).build());
+                    allFrames.add(builder.firstChance(lastValue).secondChance(value).build());
                 }
             }
         }
@@ -80,10 +79,5 @@ public class BowlingMatchBuilder implements MatchBuilder {
         return res.equalsIgnoreCase(BowlingRules.Fault) ||
                 (Integer.parseInt(res) >= BowlingRules.MinimalValue &&
                         Integer.parseInt(res) <= BowlingRules.MaxValue);
-    }
-
-    @Override
-    public List<PlayerScore> producePlayersScores(Stream<Chance> chanceStream) {
-        return null;
     }
 }

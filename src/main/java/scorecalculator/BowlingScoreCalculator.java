@@ -6,12 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BowlingScoreCalculator implements ScoreCalculator {
-
-    @Override
-    public Integer totalScoreCalculator(List<FrameScore> frameScores) {
-        return null;
-    }
-
     @Override
     public List<FrameScore> calculateFramesScores(List<FrameScore> frameScores) {
 

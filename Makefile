@@ -17,4 +17,4 @@ run:
 	gradlew run
 
 run-sample-one:
-	gradlew run --args='filepaths: some.txt some-other.txt'
+	gradlew run --args='firstMatch_sample.txt'

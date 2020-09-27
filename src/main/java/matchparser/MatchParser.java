@@ -1,9 +1,9 @@
 package matchparser;
 
-import java.util.stream.Stream;
+import java.util.List;
 
 public interface MatchParser {
 
-    public Stream<Chance> parseInput(String filePath);
+    public List<Chance> parseInput(String filePath);
 
 }

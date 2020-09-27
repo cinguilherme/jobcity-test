@@ -14,7 +14,6 @@ import scorecalculator.ScoreCalculator;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -39,14 +38,14 @@ public class TxtToFramesIntegrationTest {
     @Test
     @DisplayName("Should parse the txt file for the first game with mixed results and construct FrameScores according")
     void should_parse_txt_valid_input_one() {
-        Stream<Chance> chanceStream = matchTextParser.parseInput(firstMatchResource);
+        List<Chance> chanceStream = matchTextParser.parseInput(firstMatchResource);
         Map<String, List<Chance>> map = bowlingMatchBuilder.mapPlayersChance(chanceStream);
 
-        List<Boolean> validDatas = map.values().stream().map(playerList -> bowlingMatchBuilder.validatePlayerMatchData(playerList.stream())).collect(toList());
+        List<Boolean> validDatas = map.values().stream().map(playerList -> bowlingMatchBuilder.validatePlayerMatchData(playerList)).collect(toList());
         assertThat(validDatas).allMatch(hasToBeTrue -> hasToBeTrue);
 
         List<List<FrameScore>> allPlayersScores = map.values().stream()
-                .map(playerList -> bowlingMatchBuilder.getPlayersChancesAsFrameScore(playerList.stream()))
+                .map(playerList -> bowlingMatchBuilder.getPlayersChancesAsFrameScore(playerList))
                 .collect(toList());
         assertThat(allPlayersScores).allMatch(scores -> scores.size() == 10);
 
@@ -64,14 +63,14 @@ public class TxtToFramesIntegrationTest {
     @Test
     @DisplayName("Should parse the txt file for the second game with all strikes and construct FrameScores according")
     void should_parse_txt_valid_input_two() {
-        Stream<Chance> chanceStream = matchTextParser.parseInput(secondMatchResource);
+        List<Chance> chanceStream = matchTextParser.parseInput(secondMatchResource);
         Map<String, List<Chance>> map = bowlingMatchBuilder.mapPlayersChance(chanceStream);
 
-        List<Boolean> validDatas = map.values().stream().map(playerList -> bowlingMatchBuilder.validatePlayerMatchData(playerList.stream())).collect(toList());
+        List<Boolean> validDatas = map.values().stream().map(playerList -> bowlingMatchBuilder.validatePlayerMatchData(playerList)).collect(toList());
         assertThat(validDatas).allMatch(hasToBeTrue -> hasToBeTrue);
 
         List<List<FrameScore>> allPlayersScores = map.values().stream()
-                .map(playerList -> bowlingMatchBuilder.getPlayersChancesAsFrameScore(playerList.stream()))
+                .map(playerList -> bowlingMatchBuilder.getPlayersChancesAsFrameScore(playerList))
                 .collect(toList());
         List<FrameScore> carlScores = allPlayersScores.get(0);
         assertThat(carlScores).hasSize(10);
@@ -84,11 +83,11 @@ public class TxtToFramesIntegrationTest {
     @Test
     @DisplayName("Should parse the txt file for the empty game")
     void should_parse_txt_invalid_input_empty() {
-        Stream<Chance> chanceStream = matchTextParser.parseInput(emptyMatchResource);
+        List<Chance> chanceStream = matchTextParser.parseInput(emptyMatchResource);
         Map<String, List<Chance>> map = bowlingMatchBuilder.mapPlayersChance(chanceStream);
 
         List<Boolean> validDatas = map.values().stream()
-                .map(playerList -> bowlingMatchBuilder.validatePlayerMatchData(playerList.stream()))
+                .map(playerList -> bowlingMatchBuilder.validatePlayerMatchData(playerList))
                 .collect(toList());
         assertThat(validDatas).isEmpty();
     }

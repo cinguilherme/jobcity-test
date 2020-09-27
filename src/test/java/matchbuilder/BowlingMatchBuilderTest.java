@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 
@@ -29,7 +30,7 @@ class BowlingMatchBuilderTest {
         List<Chance> johnChances = validChances(JOHN, 20);
         List<Chance> jeffChances = validChances(JEFF, 10);
         Stream<Chance> allChances = Stream.concat(johnChances.stream(), jeffChances.stream());
-        Map<String, List<Chance>> playersChanceMap = subject.mapPlayersChance(allChances);
+        Map<String, List<Chance>> playersChanceMap = subject.mapPlayersChance(allChances.collect(toList()));
         assertThat(playersChanceMap).isNotEmpty();
         assertThat(playersChanceMap.get(JOHN)).hasSize(20);
         assertThat(playersChanceMap.get(JEFF)).hasSize(10);
@@ -38,28 +39,28 @@ class BowlingMatchBuilderTest {
     @Test
     void should_validate_player_match() {
         List<Chance> johnChances = validChances(JOHN, 20);
-        Boolean actual = subject.validatePlayerMatchData(johnChances.stream());
+        Boolean actual = subject.validatePlayerMatchData(johnChances);
         assertThat(actual).isTrue();
     }
 
     @Test
     void should_validate_player_match_with_faults() {
         List<Chance> johnChances = validChancesNoSparesWithFaults(JOHN, 20, 4);
-        Boolean actual = subject.validatePlayerMatchData(johnChances.stream());
+        Boolean actual = subject.validatePlayerMatchData(johnChances);
         assertThat(actual).isTrue();
     }
 
     @Test
     void should_validate_player_match_with_all_faults() {
         List<Chance> johnChances = validChancesNoSparesWithFaults(JOHN, 20, 20);
-        Boolean actual = subject.validatePlayerMatchData(johnChances.stream());
+        Boolean actual = subject.validatePlayerMatchData(johnChances);
         assertThat(actual).isTrue();
     }
 
     @Test
     void shouldConvertPlayersChancesIntoFrameScores_All_Faults() {
         List<Chance> johnChances = validChancesNoSparesWithFaults(JOHN, 20, 20);
-        List<FrameScore> playerFrameScores = subject.getPlayersChancesAsFrameScore(johnChances.stream());
+        List<FrameScore> playerFrameScores = subject.getPlayersChancesAsFrameScore(johnChances);
 
         assertThat(playerFrameScores).hasSize(10);
         assertThat(playerFrameScores).noneMatch(FrameScore::isSpare);
@@ -73,7 +74,7 @@ class BowlingMatchBuilderTest {
     @Test
     void shouldConvertPlayersChancesIntoFrameScores_Some_Faults() {
         List<Chance> johnChances = validChancesNoSparesWithFaults(JOHN, 20, 4);
-        List<FrameScore> playerFrameScores = subject.getPlayersChancesAsFrameScore(johnChances.stream());
+        List<FrameScore> playerFrameScores = subject.getPlayersChancesAsFrameScore(johnChances);
 
         assertThat(playerFrameScores).hasSize(10);
         assertThat(playerFrameScores).noneMatch(FrameScore::isSpare);
@@ -87,7 +88,7 @@ class BowlingMatchBuilderTest {
     @Test
     void shouldConvertPlayersChancesIntoFrameScores_All_Strikes() {
         List<Chance> johnChances = validChancesAllStrikes(JOHN, 11);
-        List<FrameScore> playerFrameScores = subject.getPlayersChancesAsFrameScore(johnChances.stream());
+        List<FrameScore> playerFrameScores = subject.getPlayersChancesAsFrameScore(johnChances);
         assertThat(playerFrameScores).hasSize(10);
         assertThat(playerFrameScores).noneMatch(FrameScore::isSpare);
         assertThat(playerFrameScores).allMatch(FrameScore::isStrike);
@@ -96,7 +97,7 @@ class BowlingMatchBuilderTest {
     @Test
     void shouldConvertPlayersChancesIntoFrameScores_All_Spare() {
         List<Chance> johnChances = validChancesAllSpare(JOHN, 20);
-        List<FrameScore> playerFrameScores = subject.getPlayersChancesAsFrameScore(johnChances.stream());
+        List<FrameScore> playerFrameScores = subject.getPlayersChancesAsFrameScore(johnChances);
         assertThat(playerFrameScores).hasSize(10);
         assertThat(playerFrameScores).allMatch(FrameScore::isSpare);
         assertThat(playerFrameScores).noneMatch(FrameScore::isStrike);
@@ -105,7 +106,7 @@ class BowlingMatchBuilderTest {
     @Test
     void shouldHaveLastFrameValid_with_spare_no_strike() {
         List<Chance> johnChances = validChancesAllSpare(JOHN, 21);
-        List<FrameScore> playerFrameScores = subject.getPlayersChancesAsFrameScore(johnChances.stream());
+        List<FrameScore> playerFrameScores = subject.getPlayersChancesAsFrameScore(johnChances);
         assertThat(playerFrameScores).hasSize(10);
 
         FrameScore frameScore = playerFrameScores.get(9);
@@ -115,7 +116,7 @@ class BowlingMatchBuilderTest {
     @Test
     void shouldHaveLastFrameValid_no_spare_no_strike() {
         List<Chance> johnChances = validChancesNoSparesWithFaultsInitWithFaults(JOHN, 20, 4);
-        List<FrameScore> playerFrameScores = subject.getPlayersChancesAsFrameScore(johnChances.stream());
+        List<FrameScore> playerFrameScores = subject.getPlayersChancesAsFrameScore(johnChances);
         assertThat(playerFrameScores).hasSize(10);
 
         FrameScore frameScore = playerFrameScores.get(9);
@@ -155,7 +156,7 @@ class BowlingMatchBuilderTest {
         }
         return res;
     }
-    
+
     private List<Chance> someInvalidChances(String playerName, int numChances, int numInvalids) {
         List<Chance> res = new ArrayList<>();
         for (int i = 0; i < numChances - numInvalids; i++) {
