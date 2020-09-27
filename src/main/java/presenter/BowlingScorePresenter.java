@@ -6,6 +6,9 @@ import java.util.List;
 
 public class BowlingScorePresenter implements MatchScorePresenter {
 
+    public static final String DOUBLE_TAB = "\t\t";
+    public static final String TAB = "\t";
+
     @Override
     public PlayerPresenterScore presentPlayerScore(String playerName, List<FrameScore> calculatedScore) {
 
@@ -26,14 +29,29 @@ public class BowlingScorePresenter implements MatchScorePresenter {
     private String pinValue(FrameScore frameScore) {
         if (!frameScore.isFinalFrame()) {
             if (frameScore.isStrike()) {
-                return "\t\tX";
+                return DOUBLE_TAB + "X";
             } else if (frameScore.isSpare()) {
-                return "\t" + frameScore.getFirstChance() + "\t" + "/";
+                return TAB + frameScore.getFirstChance() + TAB + "/";
             } else {
-                return "\t" + frameScore.getFirstChance() + "\t" + frameScore.getSecondChance();
+                return TAB + frameScore.getFirstChance() + TAB + frameScore.getSecondChance();
             }
         } else {
-            return "\t\tX\tX\tX";
+            return getLastFrameString(frameScore);
+        }
+    }
+
+    private String getLastFrameString(FrameScore frameScore) {
+        if (frameScore.isStrike()) {
+            return DOUBLE_TAB + "X" +
+                    TAB + "X" +
+                    TAB + "X";
+        } else if (frameScore.isSpare()) {
+            return TAB + frameScore.getFirstChance() +
+                    TAB + "/" +
+                    TAB + (frameScore.getFrameTenExclusive() == 10 ? "X" : frameScore.getFrameTenExclusive());
+        } else {
+            return TAB + frameScore.getFirstChance() +
+                    TAB + frameScore.getSecondChance();
         }
     }
 
@@ -41,7 +59,7 @@ public class BowlingScorePresenter implements MatchScorePresenter {
         return calculatedScore.stream()
                 .map(FrameScore::getFrameFinalScore)
                 .map(String::valueOf)
-                .reduce("Score", (acc, cur) -> acc + "\t\t" + cur) + "\n";
+                .reduce("Score", (acc, cur) -> acc + DOUBLE_TAB + cur) + "\n";
     }
 
     private String getCharRepresentation(FrameScore frameScore) {
@@ -49,15 +67,15 @@ public class BowlingScorePresenter implements MatchScorePresenter {
         else if (frameScore.isSpare()) return getRegularValueString(frameScore.getFirstChance()) + "\t/";
         else {
             return getRegularValueString(frameScore.getFirstChance()) +
-                    "\t" +
+                    TAB +
                     getRegularValueString(frameScore.getSecondChance());
         }
     }
 
     private String getLastFrameRepresentation(FrameScore frameScore) {
         return getRegularValueString(
-                frameScore.getFirstChance()) + "\t" +
-                getRegularValueString(frameScore.getSecondChance()) + "\t" +
+                frameScore.getFirstChance()) + TAB +
+                getRegularValueString(frameScore.getSecondChance()) + TAB +
                 getRegularValueString(frameScore.getFrameTenExclusive());
     }
 
