@@ -68,18 +68,45 @@ class BowlingScorePresenterTest {
                 .containsExactlyInAnyOrder(expected_Pinfalls, expectedFrameLine, expectePlayerLine, expected___Scores);
     }
 
+    @Test
+    void shouldPresentCorrecly_all_mix_results() {
+        String player = "Mix";
+        List<FrameScore> frameScores = sampleMixedValidScores();
+        PlayerPresenterScore presentScore = scorePresenter.presentPlayerScore(player, frameScores);
+
+        String expectedFrameLine = "Frame\t\t1\t\t2\t\t3\t\t4\t\t5\t\t6\t\t7\t\t8\t\t9\t\t10";
+        String expectePlayerLine = "Mix";
+        String expected_Pinfalls = "Pinfalls\t8\t/\t7\t/\t3\t4\t\tX\t2\t/\t\tX\t\tX\t8\t0\t\tX\t8\t/\t9";
+        String expected___Scores = "Score\t\t17\t\t30\t\t37\t\t57\t\t77\t\t105\t\t123\t\t131\t\t151\t\t170";
+
+        assertThat(presentScore)
+                .extracting(PlayerPresenterScore::getFrame, PlayerPresenterScore::getPinFalls,
+                        PlayerPresenterScore::getScore, PlayerPresenterScore::getPlayerName)
+                .containsExactlyInAnyOrder(expected_Pinfalls, expectedFrameLine, expectePlayerLine, expected___Scores);
+    }
+
     private List<FrameScore> sampleMixedValidScores() {
         return List.of(
-                FrameScore.builder().firstChance(8).secondChance(2).build(),
-                FrameScore.builder().firstChance(7).secondChance(3).build(),
-                FrameScore.builder().firstChance(3).secondChance(4).build(),
-                FrameScore.builder().firstChance(10).build(),
-                FrameScore.builder().firstChance(2).secondChance(8).build(),
-                FrameScore.builder().firstChance(10).build(),
-                FrameScore.builder().firstChance(10).build(),
-                FrameScore.builder().firstChance(8).secondChance(0).build(),
-                FrameScore.builder().firstChance(10).build(),
-                FrameScore.builder().firstChance(8).secondChance(2).frameTenExclusive(9).build()
+                FrameScore.builder().playerName("Mix").frameFinalScore(17)
+                        .firstChance(8).secondChance(2).build(),
+                FrameScore.builder().playerName("Mix").frameFinalScore(30)
+                        .firstChance(7).secondChance(3).build(),
+                FrameScore.builder().playerName("Mix").frameFinalScore(37)
+                        .firstChance(3).secondChance(4).build(),
+                FrameScore.builder().playerName("Mix").frameFinalScore(57)
+                        .firstChance(10).build(),
+                FrameScore.builder().playerName("Mix").frameFinalScore(77)
+                        .firstChance(2).secondChance(8).build(),
+                FrameScore.builder().playerName("Mix").frameFinalScore(105)
+                        .firstChance(10).build(),
+                FrameScore.builder().playerName("Mix").frameFinalScore(123)
+                        .firstChance(10).build(),
+                FrameScore.builder().playerName("Mix").frameFinalScore(131)
+                        .firstChance(8).secondChance(0).build(),
+                FrameScore.builder().playerName("Mix").frameFinalScore(151)
+                        .firstChance(10).build(),
+                FrameScore.builder().playerName("Mix").frameFinalScore(170).isFinalFrame(true)
+                        .firstChance(8).secondChance(2).frameTenExclusive(9).build()
         );
     }
 
