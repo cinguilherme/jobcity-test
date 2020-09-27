@@ -27,7 +27,7 @@ public class Main {
         System.out.println("Working Directory = " + workdir);
         filesPath.stream().forEach(fileName -> {
             System.out.println("Filename: " + fileName);
-            System.out.println("Windows: Lookup Filename: " + workdir + "\\" + fileName);
+            System.out.println("Windows: Lookup Filename: " + workdir + "\\matchesFiles\\" + fileName);
         });
         System.out.println("#############################################");
 
@@ -36,8 +36,11 @@ public class Main {
         ScoreCalculator scoreCalculator = new BowlingScoreCalculator();
 
         filesPath.forEach(fPath -> {
-            List<Chance> chanceStream = fileParser.parseInput(workdir + "\\" + fPath);
+            String filePath = workdir + "\\matchesFiles\\" + fPath;
+            System.out.println("File path: " + filePath);
+            List<Chance> chanceStream = fileParser.parseInput(filePath);
             Boolean isValidData = bowlingMatchBuilder.validatePlayerMatchData(chanceStream);
+            System.out.println("is valid data? " + isValidData);
 
             if (isValidData) {
 
@@ -47,6 +50,7 @@ public class Main {
                         .map(bowlingMatchBuilder::getPlayersChancesAsFrameScore)
                         .map(scoreCalculator::calculateFramesScores).collect(toList());
 
+                
             }
 
         });

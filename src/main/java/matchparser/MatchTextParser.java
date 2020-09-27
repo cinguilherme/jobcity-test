@@ -5,7 +5,6 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -36,9 +35,8 @@ public class MatchTextParser implements MatchParser {
     }
 
     private Optional<List<String>> getFileAsString(String filePath) {
-        ClassLoader classLoader = getClass().getClassLoader();
         try {
-            File file = new File(Objects.requireNonNull(classLoader.getResource(filePath)).getFile());
+            File file = new File(filePath);
             List<String> data = FileUtils.readLines(file, UTF_8);
             return Optional.of(data);
         } catch (IOException | NullPointerException e) {

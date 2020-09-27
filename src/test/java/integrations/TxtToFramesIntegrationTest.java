@@ -24,6 +24,8 @@ public class TxtToFramesIntegrationTest {
     private final String secondMatchResource = "secondMatch.txt";
     private final String emptyMatchResource = "empty.txt";
 
+    private final ClassLoader classLoader = getClass().getClassLoader();
+
     private MatchParser matchTextParser;
     private MatchBuilder bowlingMatchBuilder;
     private ScoreCalculator scoreCalculator;
@@ -38,7 +40,9 @@ public class TxtToFramesIntegrationTest {
     @Test
     @DisplayName("Should parse the txt file for the first game with mixed results and construct FrameScores according")
     void should_parse_txt_valid_input_one() {
-        List<Chance> chanceStream = matchTextParser.parseInput(firstMatchResource);
+        String resource = classLoader.getResource(firstMatchResource).getFile();
+
+        List<Chance> chanceStream = matchTextParser.parseInput(resource);
         Map<String, List<Chance>> map = bowlingMatchBuilder.mapPlayersChance(chanceStream);
 
         List<Boolean> validDatas = map.values().stream().map(playerList -> bowlingMatchBuilder.validatePlayerMatchData(playerList)).collect(toList());
@@ -63,7 +67,9 @@ public class TxtToFramesIntegrationTest {
     @Test
     @DisplayName("Should parse the txt file for the second game with all strikes and construct FrameScores according")
     void should_parse_txt_valid_input_two() {
-        List<Chance> chanceStream = matchTextParser.parseInput(secondMatchResource);
+        String resource = classLoader.getResource(secondMatchResource).getFile();
+
+        List<Chance> chanceStream = matchTextParser.parseInput(resource);
         Map<String, List<Chance>> map = bowlingMatchBuilder.mapPlayersChance(chanceStream);
 
         List<Boolean> validDatas = map.values().stream().map(playerList -> bowlingMatchBuilder.validatePlayerMatchData(playerList)).collect(toList());
@@ -83,7 +89,8 @@ public class TxtToFramesIntegrationTest {
     @Test
     @DisplayName("Should parse the txt file for the empty game")
     void should_parse_txt_invalid_input_empty() {
-        List<Chance> chanceStream = matchTextParser.parseInput(emptyMatchResource);
+        String resource = classLoader.getResource(emptyMatchResource).getFile();
+        List<Chance> chanceStream = matchTextParser.parseInput(resource);
         Map<String, List<Chance>> map = bowlingMatchBuilder.mapPlayersChance(chanceStream);
 
         List<Boolean> validDatas = map.values().stream()

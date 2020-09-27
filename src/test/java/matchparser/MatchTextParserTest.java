@@ -15,6 +15,8 @@ class MatchTextParserTest {
     private final String emptyResource = "empty.txt";
     private final String badFormatResource = "badlyFormatedFile.txt";
 
+    private final ClassLoader classLoader = getClass().getClassLoader();
+
     private MatchParser subject;
 
     @BeforeEach
@@ -24,9 +26,9 @@ class MatchTextParserTest {
 
     @Test
     void shouldParse_txtFile_with_valid_format() {
-        String filePath = firstMatchResource;
+        String resource = classLoader.getResource(firstMatchResource).getFile();
 
-        List<Chance> chanceActual = subject.parseInput(filePath);
+        List<Chance> chanceActual = subject.parseInput(resource);
 
         int linesExpected = 35;
         assertThat(chanceActual.size()).isEqualTo(linesExpected);
@@ -38,9 +40,9 @@ class MatchTextParserTest {
 
     @Test
     void shouldParse_txtFile_with_valid_format_secondMatch() {
-        String filePath = secondMatchResource;
+        String resource = classLoader.getResource(secondMatchResource).getFile();
 
-        List<Chance> chanceActual = subject.parseInput(filePath);
+        List<Chance> chanceActual = subject.parseInput(resource);
 
         int linesExpected = 12;
         assertThat(chanceActual.size()).isEqualTo(linesExpected);
@@ -52,9 +54,9 @@ class MatchTextParserTest {
 
     @Test
     void shouldParse_txtFile_with_no_data_and_return_empty() {
-        String filePath = emptyResource;
+        String resource = classLoader.getResource(emptyResource).getFile();
 
-        List<Chance> chanceActual = subject.parseInput(filePath);
+        List<Chance> chanceActual = subject.parseInput(resource);
 
         int linesExpected = 0;
         assertThat(chanceActual.size()).isEqualTo(linesExpected);
@@ -62,9 +64,9 @@ class MatchTextParserTest {
 
     @Test
     void shouldParse_txtFile_with_bad_formatted_text_and_return_empty() {
-        String filePath = badFormatResource;
-
-        List<Chance> chanceActual = subject.parseInput(filePath);
+        String resource = classLoader.getResource(badFormatResource).getFile();
+        
+        List<Chance> chanceActual = subject.parseInput(resource);
 
         int linesExpected = 29;
         assertThat(chanceActual.size()).isEqualTo(linesExpected);

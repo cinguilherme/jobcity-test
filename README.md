@@ -19,21 +19,7 @@ John 3
 John 7
 Jeff 7
 Jeff 3
-John 6
-John 3
-Jeff 9
-Jeff 0
-John 10
-Jeff 10
-John 8
-John 1
-Jeff 0
-Jeff 8
-John 10
-Jeff 8
-Jeff 2
-John 10
-Jeff F
+John F
 ```
 
 ### How to build?
@@ -44,6 +30,16 @@ gradlew build on windows
 
 #### Usefull commands
  - Makefile e.g "make test" windows, "make test-l" linux or mac
+
+#### How to run?
+```
+make run-sample-one
+```
+- aditional test cases?
+add new files to the matchesFiles, an run with grande
+```
+gradlew run --args='my_custon_match_file.txt'
+```
 
 #### pure java program execution? build project and have the Jar available
 ```
