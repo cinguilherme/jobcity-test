@@ -42,9 +42,9 @@ public class BowlingScorePresenter implements MatchScorePresenter {
 
     private String getLastFrameString(FrameScore frameScore) {
         if (frameScore.isStrike()) {
-            return DOUBLE_TAB + "X" +
-                    TAB + "X" +
-                    TAB + "X";
+            return TAB + "X" +
+                    TAB + (frameScore.getSecondChance() == 10 ? "X" : frameScore.getSecondChance()) +
+                    TAB + (frameScore.getFrameTenExclusive() == 10 ? "X" : frameScore.getFrameTenExclusive());
         } else if (frameScore.isSpare()) {
             return TAB + frameScore.getFirstChance() +
                     TAB + "/" +
