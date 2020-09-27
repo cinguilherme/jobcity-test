@@ -23,10 +23,10 @@ class BowlingScorePresenterTest {
         List<FrameScore> frameScores = sampleSimpleAllStrikesValidCalculatedScores();
         PlayerPresenterScore presentScore = scorePresenter.presentPlayerScore(playerName, frameScores);
 
-        String expectedFrameLine = "Frame\t\t1\t\t2\t\t3\t\t4\t\t5\t\t6\t\t7\t\t8\t\t9\t\t10\n";
-        String expectePlayerLine = "Jeff\n";
-        String expected_Pinfalls = "Pinfalls\t\tX\t\tX\t\tX\t\tX\t\tX\t\tX\t\tX\t\tX\t\tX\t\tX\tX\tX\n";
-        String expected___Scores = "Score\t\t30\t\t60\t\t90\t\t120\t\t150\t\t180\t\t210\t\t240\t\t270\t\t300\n";
+        String expectedFrameLine = "Frame\t\t1\t\t2\t\t3\t\t4\t\t5\t\t6\t\t7\t\t8\t\t9\t\t10";
+        String expectePlayerLine = "Jeff";
+        String expected_Pinfalls = "Pinfalls\t\tX\t\tX\t\tX\t\tX\t\tX\t\tX\t\tX\t\tX\t\tX\t\tX\tX\tX";
+        String expected___Scores = "Score\t\t30\t\t60\t\t90\t\t120\t\t150\t\t180\t\t210\t\t240\t\t270\t\t300";
 
         assertThat(presentScore)
                 .extracting(PlayerPresenterScore::getFrame, PlayerPresenterScore::getPinFalls,
@@ -40,10 +40,10 @@ class BowlingScorePresenterTest {
         List<FrameScore> frameScores = sampleSimpleAllSpareValidScores();
         PlayerPresenterScore presentScore = scorePresenter.presentPlayerScore(player, frameScores);
 
-        String expectedFrameLine = "Frame\t\t1\t\t2\t\t3\t\t4\t\t5\t\t6\t\t7\t\t8\t\t9\t\t10\n";
-        String expectePlayerLine = "Jeff\n";
-        String expected_Pinfalls = "Pinfalls\t5\t/\t5\t/\t5\t/\t5\t/\t5\t/\t5\t/\t5\t/\t5\t/\t5\t/\t5\t/\t5\n";
-        String expected___Scores = "Score\t\t15\t\t30\t\t45\t\t60\t\t75\t\t90\t\t105\t\t120\t\t135\t\t150\n";
+        String expectedFrameLine = "Frame\t\t1\t\t2\t\t3\t\t4\t\t5\t\t6\t\t7\t\t8\t\t9\t\t10";
+        String expectePlayerLine = "Jeff";
+        String expected_Pinfalls = "Pinfalls\t5\t/\t5\t/\t5\t/\t5\t/\t5\t/\t5\t/\t5\t/\t5\t/\t5\t/\t5\t/\t5";
+        String expected___Scores = "Score\t\t15\t\t30\t\t45\t\t60\t\t75\t\t90\t\t105\t\t120\t\t135\t\t150";
 
         assertThat(presentScore)
                 .extracting(PlayerPresenterScore::getFrame, PlayerPresenterScore::getPinFalls,

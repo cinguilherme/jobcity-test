@@ -13,8 +13,8 @@ public class BowlingScorePresenter implements MatchScorePresenter {
     public PlayerPresenterScore presentPlayerScore(String playerName, List<FrameScore> calculatedScore) {
 
         return PlayerPresenterScore.builder()
-                .playerName(playerName + "\n")
-                .frame("Frame\t\t1\t\t2\t\t3\t\t4\t\t5\t\t6\t\t7\t\t8\t\t9\t\t10\n")
+                .playerName(playerName)
+                .frame("Frame\t\t1\t\t2\t\t3\t\t4\t\t5\t\t6\t\t7\t\t8\t\t9\t\t10")
                 .score(buildScorePresentedString(calculatedScore))
                 .pinFalls(buildPinFalls(calculatedScore))
                 .build();
@@ -23,7 +23,7 @@ public class BowlingScorePresenter implements MatchScorePresenter {
     private String buildPinFalls(List<FrameScore> calculatedScore) {
         return calculatedScore.stream()
                 .map(this::pinValue)
-                .reduce("Pinfalls", (acc, cur) -> acc + cur) + "\n";
+                .reduce("Pinfalls", (acc, cur) -> acc + cur);
     }
 
     private String pinValue(FrameScore frameScore) {
@@ -59,7 +59,7 @@ public class BowlingScorePresenter implements MatchScorePresenter {
         return calculatedScore.stream()
                 .map(FrameScore::getFrameFinalScore)
                 .map(String::valueOf)
-                .reduce("Score", (acc, cur) -> acc + DOUBLE_TAB + cur) + "\n";
+                .reduce("Score", (acc, cur) -> acc + DOUBLE_TAB + cur);
     }
 
     private String getCharRepresentation(FrameScore frameScore) {
