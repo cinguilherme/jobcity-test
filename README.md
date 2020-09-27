@@ -1,15 +1,19 @@
 ## The Bowling score CLI
 
 ### Requirements
+ - Jdk11 / JRE11 (not too much fancy stuff not present in JDK8 but JDK11 is required)
+ - Lombok anotation processor
+ - Junit5
  - Gradle 6.3, !! gradlew available with the source code, just user appropriate command according to Makefile
     -   GrandleW(Graddle Wrapper) it will download the gradle required by it self. 
         But having the correct JDK for the gradle is required. 
         Eg. If JDK8 is the default code will not compile due to 
             some features like String.isBlank()
- - Jdk11 / JRE11 (not too much fancy stuff not present in JDK8 but JDK11 is required)
- - Lombok anotation processor
- - Junit5
-
+            
+ - SKDman or multiple JDKs to keep in mind. run 
+    ```java -version``` 
+    to see which JDK will be used by graldew by default, if JDK8 then make 11 the default
+ 
 ### How to run?
 txt file with scores in the expected format and provide file path parameter
     a. Each line represents a player score
