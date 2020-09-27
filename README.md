@@ -4,7 +4,10 @@
  - Jdk11 / JRE11 (not too much fancy stuff not present in JDK8 but JDK11 is required)
  - Lombok anotation processor
  - Junit5
- - Gradle 6.3, !! gradlew available with the source code, just user appropriate command according to Makefile
+ - Gradle 6.3, all abouve dependencies will be taken care by gradle via gralde.build specifications
+    - gradlew does not have execution privilege on mac/linux on this source. 
+        Make it executable however by preferable way, sample "chmod 777 gradlew".
+    - !! gradlew available with the source code, just user appropriate command according to Makefile
     -   GrandleW(Graddle Wrapper) it will download the gradle required by it self. 
         But having the correct JDK for the gradle is required. 
         Eg. If JDK8 is the default code will not compile due to 
@@ -15,6 +18,13 @@
     to see which JDK will be used by graldew by default, if JDK8 then make 11 the default
  
 ### How to run?
+sample commands available on Makefile.
+otherwise just use gradlew commands like
+```
+gradlew build
+gradlew test
+gradlew run --args="filenames separated by empty space"
+```
 txt file with scores in the expected format and provide file path parameter
     a. Each line represents a player score
     b. An F represents a FOUL which should count as zero
@@ -97,7 +107,6 @@ gradlew run --args='my_custon_match_file.txt'
                 frame 10 -> [X,2,9](strike) + 2 extra-shot?
                 frame 10 -> [X,X,X](3 strike) + 2 extra-shot?
                 
-                TOTAL: ????
       
     - The program should output the scoring for the associated game according to these
       guidelines:
