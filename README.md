@@ -1,16 +1,16 @@
 ## The Bowling score CLI
 
 ### Requirements
- - Gradle 6.3, gradlew available with the source code
- - Jdk11 / JRE11 (not too much stuff over 1.8)
+ - Gradle 6.3, !! gradlew available with the source code, just user appropriate command according to Makefile
+ - Jdk11 / JRE11 (not too much fancy stuff not present in JDK8)
  - Lombok anotation processor
  - Junit5
 
 ### How to run?
-txt file with scores in the expected format
-a. Each line represents a player score
-b. An F represents a FOUL which should count as zero
-c. The rolls are tab separated on the output
+txt file with scores in the expected format and provide file path parameter
+    a. Each line represents a player score
+    b. An F represents a FOUL which should count as zero
+    c. The rolls are tab separated on the output
 
 ### Input sample Bellow
 ```
@@ -37,11 +37,15 @@ Jeff F
 ```
 
 ### How to build?
-gradle build
+gradlew build on windows
+./gradlew build on Linux or mac
 
-### Usefull commands
- - Makefile
- - Or commands bellow
+ - all usefull commands shortcuts are in the Makefile such as build, test, clean, etc
+
+#### Usefull commands
+ - Makefile e.g "make test" windows, "make test-l" linux or mac
+
+#### pure java program execution? build project and have the Jar available
 ```
 java -jar PROGRAM -in scores.txt 
 ```
