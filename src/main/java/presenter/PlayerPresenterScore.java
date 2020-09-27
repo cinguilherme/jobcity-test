@@ -10,4 +10,11 @@ public class PlayerPresenterScore {
     private String playerName;
     private String pinFalls;
     private String score;
+
+    public void presentConsole() {
+        System.out.println(frame);
+        System.out.println(playerName);
+        System.out.println(pinFalls);
+        System.out.println(score);
+    }
 }

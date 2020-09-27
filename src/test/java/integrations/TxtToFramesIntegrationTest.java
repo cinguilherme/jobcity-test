@@ -9,6 +9,8 @@ import matchparser.MatchTextParser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import presenter.BowlingScorePresenter;
+import presenter.MatchScorePresenter;
 import scorecalculator.BowlingScoreCalculator;
 import scorecalculator.ScoreCalculator;
 
@@ -29,12 +31,14 @@ public class TxtToFramesIntegrationTest {
     private MatchParser matchTextParser;
     private MatchBuilder bowlingMatchBuilder;
     private ScoreCalculator scoreCalculator;
+    private MatchScorePresenter presenter;
 
     @BeforeEach
     void setup() {
         matchTextParser = new MatchTextParser();
         bowlingMatchBuilder = new BowlingMatchBuilder();
         scoreCalculator = new BowlingScoreCalculator();
+        presenter = new BowlingScorePresenter();
     }
 
     @Test
@@ -62,6 +66,10 @@ public class TxtToFramesIntegrationTest {
 
         assertThat(johnScores.get(9).getFrameFinalScore()).isEqualTo(151);
         assertThat(jeffScores.get(9).getFrameFinalScore()).isEqualTo(151);
+
+        presenter.presentPlayerScore("John", johnScores).presentConsole();
+        presenter.presentPlayerScore("Jeff", jeffScores).presentConsole();
+
     }
 
     @Test
@@ -84,6 +92,8 @@ public class TxtToFramesIntegrationTest {
 
         List<FrameScore> frameScoresCalculated = scoreCalculator.calculateFramesScores(carlScores);
         assertThat(frameScoresCalculated.get(9).getFrameFinalScore()).isEqualTo(300);
+
+        presenter.presentPlayerScore("Carl", frameScoresCalculated).presentConsole();
     }
 
     @Test

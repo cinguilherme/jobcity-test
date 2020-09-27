@@ -6,6 +6,8 @@ import matchbuilder.MatchBuilder;
 import matchparser.Chance;
 import matchparser.MatchParser;
 import matchparser.MatchTextParser;
+import presenter.BowlingScorePresenter;
+import presenter.MatchScorePresenter;
 import scorecalculator.BowlingScoreCalculator;
 import scorecalculator.ScoreCalculator;
 
@@ -34,6 +36,7 @@ public class Main {
         MatchParser fileParser = new MatchTextParser();
         MatchBuilder bowlingMatchBuilder = new BowlingMatchBuilder();
         ScoreCalculator scoreCalculator = new BowlingScoreCalculator();
+        MatchScorePresenter presenter = new BowlingScorePresenter();
 
         filesPath.forEach(fPath -> {
             String filePath = workdir + "\\matchesFiles\\" + fPath;
