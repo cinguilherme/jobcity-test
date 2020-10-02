@@ -24,26 +24,17 @@ public class Main {
 
     public static void main(String[] args) {
         List<String> filesPath = Arrays.stream(args).map(String::valueOf).collect(toList());
-
-        System.out.println("#############################################");
-        System.out.println("Bowling Game Interpreter:");
         String workdir = System.getProperty("user.dir");
-        System.out.println("Lookup Files Directory: " + workdir);
-
         filesPath.forEach(fileName -> System.out.println("Filename: " + fileName));
-
-        System.out.println("#############################################");
-
         MatchParser fileParser = new MatchTextParser();
         MatchBuilder bowlingMatchBuilder = new BowlingMatchBuilder();
         ScoreCalculator scoreCalculator = new BowlingScoreCalculator();
         MatchScorePresenter presenter = new BowlingScorePresenter();
 
         filesPath.forEach(fPath -> {
-            Path pathx = Paths.get(workdir.toString() + "/matchesFiles/" + fPath);
+            Path pathx = Paths.get(workdir + "/matchesFiles/" + fPath);
             try {
                 String filePath = pathx.toRealPath().toString();
-                System.out.println("File path: " + filePath);
                 List<Chance> chanceStream = fileParser.parseInput(filePath);
 
                 if (bowlingMatchBuilder.validateDoesNotHaveErrors(chanceStream) &&
@@ -56,13 +47,10 @@ public class Main {
                             .map(scoreCalculator::calculateFramesScores).collect(toList());
 
                     allPlayersScores.forEach(list -> {
-                        System.out.println("------------------------------------------------------------------------------------------");
                         presenter.presentPlayerScore(list).presentConsole();
                     });
-                    System.out.println("##############################################################################################\n");
 
                 } else {
-                    System.out.println("##############################################################################################");
                     System.out.println("Invalid data for file: " + fPath);
                 }
             } catch (IOException e) {
