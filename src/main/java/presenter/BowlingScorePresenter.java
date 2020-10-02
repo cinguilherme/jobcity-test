@@ -30,6 +30,21 @@ public class BowlingScorePresenter implements MatchScorePresenter {
         System.out.println("Invalid Data detected for file: " + fPath);
     }
 
+    @Override
+    public void initialPresentation(String filePath) {
+        System.out.println("#############################################");
+        System.out.println("Bowling Game Interpreter:");
+        String workdir = System.getProperty("user.dir");
+        System.out.println("Lookup Files Directory: " + workdir);
+        System.out.println("Filepath: " + filePath);
+        System.out.println("#############################################");
+    }
+
+    @Override
+    public void fileNotProvided() {
+        System.out.println("Input file not provided");
+    }
+
     private String buildPinFalls(List<FrameScore> calculatedScore) {
         return calculatedScore.stream()
                 .map(this::pinValue)

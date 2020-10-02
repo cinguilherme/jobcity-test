@@ -17,6 +17,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
@@ -25,38 +26,45 @@ public class Main {
     public static void main(String[] args) {
         List<String> filesPath = Arrays.stream(args).map(String::valueOf).collect(toList());
         String workdir = System.getProperty("user.dir");
-        filesPath.forEach(fileName -> System.out.println("Filename: " + fileName));
+        Optional<String> filePthOpt = filesPath.stream().findFirst();
         MatchParser fileParser = new MatchTextParser();
         MatchBuilder bowlingMatchBuilder = new BowlingMatchBuilder();
         ScoreCalculator scoreCalculator = new BowlingScoreCalculator();
         MatchScorePresenter presenter = new BowlingScorePresenter();
 
-        filesPath.forEach(fPath -> {
-            Path pathx = Paths.get(workdir + "/matchesFiles/" + fPath);
-            try {
-                String filePath = pathx.toRealPath().toString();
-                List<Chance> chanceStream = fileParser.parseInput(filePath);
+        if (filePthOpt.isEmpty()) {
+            presenter.fileNotProvided();
+        } else {
+            filePthOpt.ifPresent(filePathX -> {
+                presenter.initialPresentation(filePathX);
 
-                if (bowlingMatchBuilder.validateDoesNotHaveErrors(chanceStream) &&
-                        bowlingMatchBuilder.validatePlayerMatchData(chanceStream)) {
+                Path pathx = Paths.get(workdir + "/matchesFiles/" + filePathX);
+                try {
+                    String filePath = pathx.toRealPath().toString();
+                    List<Chance> chanceStream = fileParser.parseInput(filePath);
 
-                    Map<String, List<Chance>> playersMap = bowlingMatchBuilder.mapPlayersChance(chanceStream);
+                    if (bowlingMatchBuilder.validateDoesNotHaveErrors(chanceStream) &&
+                            bowlingMatchBuilder.validatePlayerMatchData(chanceStream)) {
 
-                    List<List<FrameScore>> allPlayersScores = playersMap.values().stream()
-                            .map(bowlingMatchBuilder::getPlayersChancesAsFrameScore)
-                            .map(scoreCalculator::calculateFramesScores).collect(toList());
+                        Map<String, List<Chance>> playersMap = bowlingMatchBuilder.mapPlayersChance(chanceStream);
 
-                    List<List<FrameScore>> sortedByPlayerName = allPlayersScores.stream()
-                            .sorted((o1, o2) -> o1.get(0).getPlayerName().compareToIgnoreCase(o2.get(0).getPlayerName())).collect(toList());
+                        List<List<FrameScore>> allPlayersScores = playersMap.values().stream()
+                                .map(bowlingMatchBuilder::getPlayersChancesAsFrameScore)
+                                .map(scoreCalculator::calculateFramesScores).collect(toList());
 
-                    sortedByPlayerName.forEach(list -> presenter.presentPlayerScore(list).presentConsole());
+                        List<List<FrameScore>> sortedByPlayerName = allPlayersScores.stream()
+                                .sorted((o1, o2) -> o1.get(0).getPlayerName().compareToIgnoreCase(o2.get(0).getPlayerName())).collect(toList());
 
-                } else {
-                    presenter.presentInvalidData(fPath);
+                        sortedByPlayerName.forEach(list -> presenter.presentPlayerScore(list).presentConsole());
+
+                    } else {
+                        presenter.presentInvalidData(filePathX);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
+            });
+
+        }
     }
 }
