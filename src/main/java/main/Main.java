@@ -38,7 +38,7 @@ public class Main {
             filePthOpt.ifPresent(filePathX -> {
                 presenter.initialPresentation(filePathX);
 
-                Path pathx = Paths.get(workdir + "/matchesFiles/" + filePathX);
+                Path pathx = Paths.get(workdir + "/" + filePathX);
                 try {
                     String filePath = pathx.toRealPath().toString();
                     List<Chance> chanceStream = fileParser.parseInput(filePath);

@@ -16,13 +16,16 @@ clean-l:
 run:
 	gradlew run
 
-run-sample-one-ref:
-	gradlew run --args='inputfiles/firstMatch_sample.txt'
-
 run-sample-one:
-	gradlew run --args='firstMatch_sample.txt'
+	gradlew run --args='matchesFiles/firstMatch_sample.txt'
 
 run-sample-two:
+	gradlew run --args='firstMatch_sample.txt'
+
+run-sample-one-old:
+	gradlew run --args='firstMatch_sample.txt'
+
+run-sample-two-old:
 	gradlew run --args='firstMatch_sample.txt secondMatch.txt badlyFormatedFile.txt'
 
 unlock-gradle:
