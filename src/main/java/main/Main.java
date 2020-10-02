@@ -46,12 +46,13 @@ public class Main {
                             .map(bowlingMatchBuilder::getPlayersChancesAsFrameScore)
                             .map(scoreCalculator::calculateFramesScores).collect(toList());
 
-                    allPlayersScores.forEach(list -> {
-                        presenter.presentPlayerScore(list).presentConsole();
-                    });
+                    List<List<FrameScore>> sortedByPlayerName = allPlayersScores.stream()
+                            .sorted((o1, o2) -> o1.get(0).getPlayerName().compareToIgnoreCase(o2.get(0).getPlayerName())).collect(toList());
+
+                    sortedByPlayerName.forEach(list -> presenter.presentPlayerScore(list).presentConsole());
 
                 } else {
-                    System.out.println("Invalid data for file: " + fPath);
+                    presenter.presentInvalidData(fPath);
                 }
             } catch (IOException e) {
                 e.printStackTrace();

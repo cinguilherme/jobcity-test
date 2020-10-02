@@ -11,4 +11,6 @@ public class Chance {
 
     private boolean error;
     private String errorStr;
+
+    private boolean isFault;
 }

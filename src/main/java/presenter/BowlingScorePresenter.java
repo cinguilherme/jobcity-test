@@ -25,6 +25,11 @@ public class BowlingScorePresenter implements MatchScorePresenter {
                 .build();
     }
 
+    @Override
+    public void presentInvalidData(String fPath) {
+        System.out.println("Invalid Data detected for file: " + fPath);
+    }
+
     private String buildPinFalls(List<FrameScore> calculatedScore) {
         return calculatedScore.stream()
                 .map(this::pinValue)
@@ -36,9 +41,9 @@ public class BowlingScorePresenter implements MatchScorePresenter {
             if (frameScore.isStrike()) {
                 return DOUBLE_TAB + "X";
             } else if (frameScore.isSpare()) {
-                return TAB + frameScore.getFirstChance() + TAB + "/";
+                return TAB + frameScore.getFirstScorePresentable() + TAB + "/";
             } else {
-                return TAB + frameScore.getFirstChance() + TAB + frameScore.getSecondChance();
+                return TAB + frameScore.getFirstScorePresentable() + TAB + frameScore.getSecondScorePresentable();
             }
         } else {
             return getLastFrameString(frameScore);
@@ -55,8 +60,8 @@ public class BowlingScorePresenter implements MatchScorePresenter {
                     TAB + "/" +
                     TAB + (frameScore.getFrameTenExclusive() == 10 ? "X" : frameScore.getFrameTenExclusive());
         } else {
-            return TAB + frameScore.getFirstChance() +
-                    TAB + frameScore.getSecondChance();
+            return TAB + frameScore.getFirstScorePresentable() +
+                    TAB + frameScore.getSecondScorePresentable();
         }
     }
 

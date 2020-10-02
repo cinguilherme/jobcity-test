@@ -34,6 +34,7 @@ public class BowlingMatchBuilder implements MatchBuilder {
     public List<FrameScore> getPlayersChancesAsFrameScore(List<Chance> playerChances) {
         boolean frameOpen = true;
         int lastValue = 0;
+        boolean lastValFault = false;
         boolean lastFirst = false;
         boolean lastSecond = false;
         boolean lastThird = false;
@@ -44,16 +45,20 @@ public class BowlingMatchBuilder implements MatchBuilder {
         for (Chance chance : playerChances) {
             lastFrame.playerName(chance.getPlayer());
             int value = getResultValue(chance);
+            boolean valueFault = getFaultValue(chance);
             if (allFrames.size() == 9) { //last frame evaluation
                 lastFrame.isFinalFrame(true);
                 if (!lastFirst) {
                     lastFrame.firstChance(value);
+                    lastFrame.isFirstFault(valueFault);
                     lastFirst = true;
                 } else if (!lastSecond) {
                     lastFrame.secondChance(value);
+                    lastFrame.isSecondFault(valueFault);
                     lastSecond = true;
                 } else if (!lastThird) {
                     lastFrame.frameTenExclusive(value);
+                    lastFrame.isTenExclusiveFault(valueFault);
                     lastThird = true;
                 }
             } else { // non last frame
@@ -63,10 +68,14 @@ public class BowlingMatchBuilder implements MatchBuilder {
                     allFrames.add(builder.firstChance(10).build());
                 } else if (value < 10 && frameOpen) {
                     lastValue = value;
+                    lastValFault = valueFault;
                     frameOpen = false;
                 } else {
                     frameOpen = true;
-                    allFrames.add(builder.firstChance(lastValue).secondChance(value).build());
+                    allFrames.add(builder
+                            .firstChance(lastValue).isFirstFault(lastValFault)
+                            .secondChance(value).isSecondFault(valueFault)
+                            .build());
                 }
             }
         }
@@ -76,6 +85,10 @@ public class BowlingMatchBuilder implements MatchBuilder {
 
     private int getResultValue(Chance chance) {
         return chance.getRes().equalsIgnoreCase("F") ? 0 : Integer.parseInt(chance.getRes());
+    }
+
+    private boolean getFaultValue(Chance chance) {
+        return chance.getRes().equalsIgnoreCase("F");
     }
 
     private boolean validateSimpleValuesLimits(Chance chance) {

@@ -30,8 +30,12 @@ public class MatchTextParser implements MatchParser {
         String[] values = line.split(" ");
         return values.length != 2 ?
                 Chance.builder().error(true).errorStr(line).build()
-                : Chance.builder().player(values[0]).res(values[1]).build();
+                : Chance.builder().player(values[0]).res(values[1]).isFault(isFault(values[1])).build();
 
+    }
+
+    private boolean isFault(String val) {
+        return val.equalsIgnoreCase("F");
     }
 
     private Optional<List<String>> getFileAsString(String filePath) {
